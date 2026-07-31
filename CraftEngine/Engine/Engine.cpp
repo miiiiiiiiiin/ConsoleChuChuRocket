@@ -1,15 +1,23 @@
-﻿#include "Engine.h"
+﻿#include "Engine/Engine.h"
 #include<iostream>
 #include<Windows.h>
+#include<cassert>
 //#include<chrono> 시간 계산
 
 namespace Craft
 {
+	//전역 변수 초기화
+	Engine* Engine::instance = nullptr;
+
 	Engine::Engine()
 	{
+		//instance 초기화
+		assert(!instance && "instance is not null");
+		instance = this;
 	}
 	Engine::~Engine()
 	{
+		instance = nullptr;
 	}
 	void Engine::Run()
 	{
@@ -87,6 +95,14 @@ namespace Craft
 	{
 		//엔진 종료 플래그 설정
 		isQuit = true;
+	}
+	Engine& Engine::Get()
+	{
+		//검증 - 어서트(assert)
+		//무조건 통화해야하는 조건이 있을 때 사용
+		//디버그 모드에서만 동작.(릴리즈에선 사라짐)
+		assert(instance && "instance is null");
+		return *instance;
 	}
 	void Engine::ProcessInput()
 	{
