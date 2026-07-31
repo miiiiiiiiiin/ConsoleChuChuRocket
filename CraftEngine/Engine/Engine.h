@@ -1,7 +1,11 @@
 ﻿#pragma once
+#include<memory> // 스마트 포인터 사용
 
 namespace Craft
 {
+	//전방 선언
+	class Level;
+
 	//메인 엔진 클래스
 	//엔진 루프 제공, 게임 엔진 핵심기능 제공
 	class Engine
@@ -19,6 +23,18 @@ namespace Craft
 		void Run();
 		//엔진종료함수
 		void Quit();
+
+		//레벨 추가 요청 함수
+		// 1. std::is_base_of 하는일이 무엇인지
+		// 2. std::enable_if_t 하는일이 무엇인지
+		// 3. typename = std::enable_if_t<std::is_base_of<Level, T>::value>>
+		template<typename T, 
+			typename = std::enable_if_t<std::is_base_of<Level, T>::value>>
+		void AddNewLevel()
+		{
+			//추가 요청 레벨 객체 생성
+			nextLevel = std::make_shared<T>();
+		}
 
 		//전역 접근 함수
 		static Engine& Get();
@@ -57,6 +73,13 @@ namespace Craft
 
 		//전역 접근이 가능하도록 변수 선언
 		static Engine* instance;
+
+		//메인 레벨
+		std::shared_ptr<Level> mainLevel;
+
+		//추가 요청된 레벨
+		std::shared_ptr<Level> nextLevel;
+
 	};
 }
 

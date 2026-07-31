@@ -12,6 +12,9 @@ namespace Craft
 	// : weak_from_this() - this 포인터를 weak_ptr로 변환.
 	class Level : public std::enable_shared_from_this<Level>
 	{
+		//friend선언
+		friend class Engine;
+
 	public:
 		Level();
 		virtual ~Level();
@@ -25,6 +28,8 @@ namespace Craft
 		virtual void Draw();
 
 		//액터 추가 함수(템플릿) ...args:가변인자
+		//typename ...Args=> 인자를 여러 개 받을 수 있다 라는 뜻
+		//std::enable_if_t<std::is_base_of<Actor, T>::value> => T가 Actor를 상속받았으면 true 즉 액터인지 아닌지 판별
 		template<typename T, typename ...Args, 
 			typename = std::enable_if_t<std::is_base_of<Actor, T>::value>>
 			std::shared_ptr<T> SpawnActor(Args&& ...args)
