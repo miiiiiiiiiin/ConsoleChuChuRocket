@@ -29,7 +29,8 @@ namespace Craft
 
 		//액터 추가 함수(템플릿) ...args:가변인자
 		//typename ...Args=> 인자를 여러 개 받을 수 있다 라는 뜻
-		//std::enable_if_t<std::is_base_of<Actor, T>::value> => T가 Actor를 상속받았으면 true 즉 액터인지 아닌지 판별
+		//std::enable_if_t<std::is_base_of<Actor, T>::value> => SFINAE 라고함
+		// T가 Actor를 상속받았으면 true 즉 액터인지 아닌지 판별한다는 뜻
 		template<typename T, typename ...Args, 
 			typename = std::enable_if_t<std::is_base_of<Actor, T>::value>>
 			std::shared_ptr<T> SpawnActor(Args&& ...args)
