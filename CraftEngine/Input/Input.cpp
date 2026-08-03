@@ -44,7 +44,8 @@ namespace Craft
 		//현재 프레임에 키 입력이 발생했는지 확인
 		for (int i = 0; i < keyCount; i++)
 		{
-			//키 눌림 저장(0x8000: 최상위 비트)
+			//키 눌림 저장(특정 키가 눌리면 0x8000: 최상위 비트가 반환된다)
+			//GetAsyncKeyState(i) & 0x8000(AND연산)이 1이면 true, 아니면 false 
 			keyStates[i].isKeyDown = ((GetAsyncKeyState(i) & 0x8000) != 0);
 		}
 	}

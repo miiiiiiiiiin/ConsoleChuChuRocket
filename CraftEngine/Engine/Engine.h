@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include<memory> // 스마트 포인터 사용
+#include<Core/Core.h>
 
 namespace Craft
 {
@@ -9,7 +10,7 @@ namespace Craft
 
 	//메인 엔진 클래스
 	//엔진 루프 제공, 게임 엔진 핵심기능 제공
-	class Engine
+	class CRAFT_API Engine
 	{
 		//엔진설정(데이터)
 		struct Setting
