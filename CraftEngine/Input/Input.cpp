@@ -49,7 +49,7 @@ namespace Craft
 			keyStates[i].isKeyDown = ((GetAsyncKeyState(i) & 0x8000) != 0);
 		}
 	}
-	void Craft::Input::SavePreviousStates()
+	void Input::SavePreviousStates()
 	{
 		//이전 프레임 입력 값 저장
 		for (KeyState& state : keyStates)

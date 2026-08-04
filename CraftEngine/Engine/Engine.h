@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include<memory> // 스마트 포인터 사용
 #include<Core/Core.h>
+#include<Render/Renderer.h>
 
 namespace Craft
 {
 	//전방 선언
 	class Level;
 	class Input;
+	class Renderer;
 
 	//메인 엔진 클래스
 	//엔진 루프 제공, 게임 엔진 핵심기능 제공
@@ -84,6 +86,9 @@ namespace Craft
 		
 		//입력 시스템 변수
 		std::unique_ptr<Input> input;
+
+		//렌더러
+		std::unique_ptr<Renderer> renderer;
 	};
 }
 

@@ -4,6 +4,13 @@
 #include<Windows.h>
 
 using namespace Craft;
+TestActor::TestActor() : Actor("P", Vector2(5, 5), Color::GREEN)
+{
+	sortingOrder = 5;
+}
+TestActor::~TestActor()
+{
+}
 void TestActor::Tick(float deltaTime)
 {
 	//상위 로직 호출
@@ -16,20 +23,23 @@ void TestActor::Tick(float deltaTime)
 		//엔진 종료
 		QuitGame();
 	}
-	if (Input::Get().GetKeyDown('A'))
+	//wasd방향키 이동 처리
+	//@Temp : 프레임시간 고려는 나중에
+	if (Input::Get().GetKey(VK_LEFT) && position.x > 0)
 	{
-		std::cout << "A key is down\n";
+		position.x -= 1;
+	}
+	if (Input::Get().GetKey(VK_RIGHT) && position.x < 39)
+	{
+		position.x += 1;
+	}
+	if (Input::Get().GetKey(VK_UP) && position.y > 0)
+	{
+		position.y -= 1;
+	}
+	if (Input::Get().GetKey(VK_DOWN) && position.y < 24)
+	{
+		position.y += 1;
 	}
 
-	if (Input::Get().GetKey('A'))
-	{
-		std::cout << "A key is holding down\n";
-	}
-
-	if (Input::Get().GetKeyUp('A'))
-	{
-		std::cout << "A key is up\n";
-	}
-	//std::cout << "TestActor: Tick() - deltaTime: " << deltaTime
-	//<< "| FPS: " << (1.0f / deltaTime) << "\n";
 }

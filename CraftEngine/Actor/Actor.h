@@ -1,7 +1,11 @@
 #pragma once
 
 #include<Core/Core.h>
+#include<Math/Color.h>
+#include<Math/Vector2.h>
+#include<string>
 #include<memory> // std::weak_ptr사용
+
 namespace Craft
 {
 	//전방선언
@@ -11,6 +15,12 @@ namespace Craft
 	class  CRAFT_API Actor
 	{
 	public:
+		Actor(
+			const std::string& image = "",
+			const Vector2 & position = Vector2::Zero,
+			Color color = Color::WHITE
+			
+		);
 		virtual ~Actor();
 
 		//게임 플레이 이벤트 함수
@@ -32,6 +42,9 @@ namespace Craft
 		inline std::shared_ptr<Level> GetOwner() const { return owner.lock(); }
 		inline void SetOwner(std::weak_ptr<Level> newOwner) { owner = newOwner; }
 
+		inline Vector2 GetPosition() const { return position; }
+		void SetPosition(const Vector2& newPosition);
+
 	protected:
 		//BEginPlay이벤트 처리 여부 플래그
 		bool hasBeganPlay = false;
@@ -45,6 +58,23 @@ namespace Craft
 		//오너십: 이 액터를 소유하는 레벨 객체
 		//weak_ptr: 약참조(실제 사용을 위해서는 해당 위치가 유효한지 확인해야함)
 		std::weak_ptr<Level> owner;
+
+		//화면에 그릴 글자
+		std::string image;
+
+		//글자 색상
+		Color color = Color::WHITE;
+
+		//글자 길이
+		int width = 0;
+		
+		//렌더링 순서
+		int sortingOrder = 0;
+
+		//위치
+		Vector2 position;
+
+
 	};
 }
 
