@@ -16,6 +16,11 @@ void TestActor::Tick(float deltaTime)
 	//상위 로직 호출
 	Actor::Tick(deltaTime);
 
+	//const int size = 50;
+	//char* fpsString[size] = {};
+	//fprintf_s(fpsString, size, "dfsfd", )
+	//SetConsoleTitleA(fpsString)
+
 	//TODO: 임시 처리
 	//esc 누르면 종료
 	if(Input::Get().GetKeyDown(VK_ESCAPE))
