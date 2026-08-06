@@ -1,7 +1,7 @@
 #include "TestActor.h"
-#include<Input/Input.h>
-#include<iostream>
-#include<Windows.h>
+#include <Input/Input.h>
+#include <iostream>
+#include <Windows.h>
 
 using namespace Craft;
 TestActor::TestActor() : Actor("P", Vector2(5, 5), Color::GREEN)

@@ -1,10 +1,11 @@
 #pragma once
 
-#include<Core/Core.h>
-#include<Math/Color.h>
-#include<Math/Vector2.h>
-#include<string>
-#include<memory> // std::weak_ptr사용
+#include <Core/Core.h>
+#include <Math/Color.h>
+#include <Math/Vector2.h>
+#include <Core/CraftObject.h>
+#include <string>
+#include <memory> // std::weak_ptr사용
 
 namespace Craft
 {
@@ -12,8 +13,11 @@ namespace Craft
 	class Level;
 
 	//가상 공간에 배치될 모든 액터의 기본 클래스
-	class  CRAFT_API Actor
+	class  CRAFT_API Actor : public CraftObject
 	{
+		// 매크로 지정시 뒤에 세미콜론넣으면안됨~~~
+		TYPE_DECLARATIONS(Actor, CraftObject)
+
 	public:
 		Actor(
 			const std::string& image = "",

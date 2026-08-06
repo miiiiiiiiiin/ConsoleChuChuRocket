@@ -82,8 +82,8 @@ namespace Craft
 		SMALL_RECT rect = {
 			0,							// Left
 			0,							// top
-			static_cast<short>(size.x), // right
-			static_cast<short>(size.y)  // bottom
+			static_cast<short>(size.x - 1), // right
+			static_cast<short>(size.y - 1)  // bottom
 		};
 
 		BOOL result = WriteConsoleOutputA(
