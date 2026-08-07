@@ -7,6 +7,13 @@
 // 소코반: 박스를 정해진 위치에 모두 옮기는 것이 클리어 규칙
 class GameLevel : public Craft::Level
 {
+	TYPE_DECLARATIONS(GameLevel, Level)
+public:
+	// 플레이어가 이동하려는 위치가 이동가능한지 판단
+	bool CanMove(
+		const Craft::Vector2& playerPosition,
+		const Craft::Vector2& nextPosition
+	);
 private:
 	//레벨 초기화 함수
 	virtual void OnInitialized() override;

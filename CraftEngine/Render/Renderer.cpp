@@ -125,14 +125,14 @@ namespace Craft
             const int visibleStartX = startX < 0 ? 0 : startX;
             const int visibleEnd = endX >= screenSize.x ? screenSize.x - 1 : endX;
              
-            // 문자열을 루프 순회하면서 글자를 2차워 ㄴ배열에 하나씩 기록
+            // 문자열을 루프 순회하면서 글자를 2차원 배열에 하나씩 기록
             for (int x = visibleStartX; x <= visibleEnd; x++)
             {
                 // 문자열에서 글자값을 가져올 때 사용할 인덱스
                 const int sourceIndex = x - startX;
 
                 // 글자 2차원 배열의 인덱스
-                // (y * width + x) 
+                // (y * width) + x
                 const int index = (command.position.y * screenSize.x) + x;
 
                 // 정렬 순서를 비교해서 그릴지 말지 판정
@@ -185,45 +185,45 @@ namespace Craft
     }
 
     // ------------- Frame --------------- //
-Renderer::Frame::Frame(int bufferCount)
-{
-	// 2차원 배열 생성.
-	charInfoArray = std::make_unique<CHAR_INFO[]>(bufferCount);
-	sortingOrderArray = std::make_unique<int[]>(bufferCount);
-}
-
-Renderer::Frame::~Frame()
-{
-
-}
-
-// 프레임 초기화 함수.
-void Renderer::Frame::Clear(const Vector2& screenSize)
-{
-	// 이중 루프를 순회하면서 값 초기화.
-	const int width = screenSize.x;
-	const int height = screenSize.y;
-
-	for (int y = 0; y < height; ++y)
-	{
-		for (int x = 0; x < width; ++x)
-		{
-			// 1차원 배열을 2차원 배열로 사용할 때
-			// 필요한 인덱스 좌표 변환.
-			const int index = (y * width) + x;
-
-			// 글자 항목 초기화.
-			CHAR_INFO& info = charInfoArray[index];
-			// 빈문자 설정 - 기존의 설정된 값 지우기.
-			info.Char.AsciiChar = ' ';
-			// 색상 표기 안함.
-			info.Attributes = 0;
-
-			// 그리기 순서 배열 항목 초기화.
-			sortingOrderArray[index] = -1;
-		}
-	}
-}
-// ------------- Frame --------------- //
-
+    Renderer::Frame::Frame(int bufferCount)
+    {
+    	// 2차원 배열 생성.
+    	charInfoArray = std::make_unique<CHAR_INFO[]>(bufferCount);
+    	sortingOrderArray = std::make_unique<int[]>(bufferCount);
+    }
+    
+    Renderer::Frame::~Frame()
+    {
+    
+    }
+    
+    // 프레임 초기화 함수.
+    void Renderer::Frame::Clear(const Vector2& screenSize)
+    {
+    	// 이중 루프를 순회하면서 값 초기화.
+    	const int width = screenSize.x;
+    	const int height = screenSize.y;
+    
+    	for (int y = 0; y < height; ++y)
+    	{
+    		for (int x = 0; x < width; ++x)
+    		{
+    			// 1차원 배열을 2차원 배열로 사용할 때
+    			// 필요한 인덱스 좌표 변환.
+    			const int index = (y * width) + x;
+    
+    			// 글자 항목 초기화.
+    			CHAR_INFO& info = charInfoArray[index];
+    			// 빈문자 설정 - 기존의 설정된 값 지우기.
+    			info.Char.AsciiChar = ' ';
+    			// 색상 표기 안함.
+    			info.Attributes = 0;
+    
+    			// 그리기 순서 배열 항목 초기화.
+    			sortingOrderArray[index] = -1;
+    		}
+    	}
+    }
+    // ------------- Frame --------------- //
+    
 }
