@@ -8,5 +8,7 @@ class Player : public Craft::Actor
 
 public:
 	Player(const Craft::Vector2& position);
+private:
+	virtual void Tick(float deltaTime) override;
 };
 
