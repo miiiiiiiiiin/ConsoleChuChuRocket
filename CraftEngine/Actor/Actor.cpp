@@ -35,13 +35,17 @@ namespace Craft
 
 	}
 
-	void  Actor::Destroy()
+	void Actor::OnCollision(const std::shared_ptr<Actor>& other)
+	{
+	}
+
+	void Actor::Destroy()
 	{
 		//삭제 예약 설정
 		hasExpired = true;
 	}
 
-	void  Actor::QuitGame()
+	void Actor::QuitGame()
 	{
 		//엔진 종료 요청
 		Engine::Get().Quit();

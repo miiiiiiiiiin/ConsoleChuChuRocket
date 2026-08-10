@@ -75,4 +75,19 @@ namespace Craft
 		//추가 처리된 목록 정리
 		addRequestedActorList.clear();
 	}
+	void Level::SavePreviousActorStates()
+	{
+		// 액터 순회하면서 이전 상태 저장 처리
+		for (const auto& actor : actorList)
+		{
+			//액터가 활성화되지않았으며무시'
+			if (!actor->IsActive())
+			{
+				continue;
+			}
+
+			//상태 저장
+			actor->SavePreviousState();
+		}
+	}
 }
