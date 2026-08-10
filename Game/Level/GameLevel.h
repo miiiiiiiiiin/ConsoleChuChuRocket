@@ -24,7 +24,13 @@ private:
 	//맵 로드 함수
 	void LoadMap(const std::string& filename);
 
+	
 private:
+	//점수 확인 함수
+	bool CheckGameClear();
+
+private:
+
 	//목표 점수 - 클리어 조건
 	int targetScore = 0;
 

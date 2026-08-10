@@ -1,10 +1,11 @@
-#include "GameLevel.h"
+﻿#include "GameLevel.h"
 
 #include <Actor/Box.h>
 #include <Actor/Ground.h>
 #include <Actor/Player.h>
 #include <Actor/Target.h>
 #include <Actor/Wall.h>
+#include <Render/Renderer.h>
 
 #include <iostream>
 #include <cassert>
@@ -66,8 +67,8 @@ bool GameLevel::CanMove(
 		// 하지만 이 덧셈은 수학적으로 정의되지 않음
 		// 원래는 안디ㅗ는데 가능하도록 별도로 정의한거임
 		// -> 동차좌표계(위치, 벡터) | 아핀 변환
-		// (x, y, w)(3차원) : w가 0이면 벡터, w가 1이면 위치.  
-		// (x, y, z, w)(4차원) : w가 0이면 벡터, w가 1이면 위치.
+		// (x, y, w)(2차원->3차원좌표계) : w가 0이면 벡터, w가 1이면 위치.  
+		// (x, y, z, w)(3차원->4차원좌표계) : w가 0이면 벡터, w가 1이면 위치.
 		//  위치 + 위치 더하면 2 되는데 정의되지않음(더하면않됨)
 		Vector2 newPosition = boxActor->GetPosition() + direction;
 
@@ -108,6 +109,9 @@ bool GameLevel::CanMove(
 					// 박스 밀림 처리
 					boxActor->SetPosition(newPosition);
 
+					// 점수 확인
+					isGameClear = CheckGameClear();
+
 					return true;
 				}
 			}
@@ -142,12 +146,22 @@ void GameLevel::OnInitialized()
 	Level::OnInitialized();
 
 	//파일 읽어서 맵 로드
-	LoadMap("Map.txt");
+	LoadMap("Stage1.txt");
 }
 
 void GameLevel::Draw()
 {
 	Level::Draw();
+
+	// 게임을 클리어한 경우 메시지 표시
+	if (isGameClear)
+	{
+		// 렌더러를 사용해서 게임 클리어 표시
+		Renderer::Get().Submit(
+			"Game Clear!",
+			Vector2(25, 0)
+		);
+	}
 }
 
 void GameLevel::LoadMap(const std::string& filename)
@@ -262,4 +276,49 @@ void GameLevel::LoadMap(const std::string& filename)
 	//파일 닫기
 	fclose(file);
 	file = nullptr;
+}
+
+bool GameLevel::CheckGameClear()
+{
+	// 점수 확인용
+	int currentScore = 0;
+
+	// 하고싶은 일: 박스가 타겟 위치에 모두 배치됐는지 확인
+
+	// 박스목록/타겟 목록 저장
+	std::vector<std::shared_ptr<Actor>> boxList;
+	std::vector<std::shared_ptr<Actor>> targetList;
+
+	// 게임 레벨의 모든 액터를 순회하면서 박스와 타겟 목록에 저장
+	for (const std::shared_ptr<Actor>& actor : actorList)
+	{
+		//. 박스인 경우 박스 목록에 추가
+		if(actor->IsTypeOf<Box>())
+		{
+			boxList.emplace_back(actor);
+			continue;
+		}
+
+		//. 타겟인 경우 타겟 목록에 추가
+		if(actor->IsTypeOf<Target>())
+		{
+			targetList.emplace_back(actor);
+		}
+		
+	}
+
+	// 목표지점에 배치된 박스 수 확인
+	for (const std::shared_ptr<Actor>& box : boxList)
+	{
+		for (const std::shared_ptr<Actor>& target : targetList)
+		{
+			if (box->GetPosition() == target->GetPosition())
+			{
+				currentScore++;
+			}
+		}
+	}
+
+	//목표 지점에 배치된 박스의 수가 타겟 수(목표 점수)와 같은지 확인
+	return currentScore == targetScore;
 }
