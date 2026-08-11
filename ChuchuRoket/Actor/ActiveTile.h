@@ -5,7 +5,7 @@ class ActiveTile : public Craft::Actor
 {
 	TYPE_DECLARATIONS(ActiveTile, Actor)
 public:
-	ActiveTile(const Craft::Vector2& position, ArrowTile::TileDir dir);
+	ActiveTile(const std::wstring& image, const Craft::Vector2& position, ArrowTile::TileDir dir);
 
 private:
 	ArrowTile::TileDir tileDir;

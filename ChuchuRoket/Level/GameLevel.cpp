@@ -8,6 +8,7 @@
 #include <Actor/ActiveTile.h>
 
 #include <cassert>
+#include <vector>
 
 using namespace Craft;
 bool GameLevel::CanMove(
@@ -23,19 +24,36 @@ bool GameLevel::CanMove(
 	Vector2 dir = nextPosition - playerPosition;
 	Vector2 newPosition = playerPosition + dir;
 
+	// 액터리스트에서 ActiveTile, Mouse인 액터만 모으기
+	std::vector<std::shared_ptr<Actor>> tileMouseList;
+	for (std::shared_ptr<Actor> actor : actorList)
+	{
+		if (actor->IsTypeOf<ActiveTile>()) {
+			tileMouseList.emplace_back(actor);
+		}
+		if (actor->IsTypeOf<Mouse>()) {
+			tileMouseList.emplace_back(actor);
+		}
+	}
+
+	// 다음 위치가 타일리스트인 경우 막기
+	for (std::shared_ptr<Actor> actor : tileMouseList)
+	{
+		if (actor->GetPosition() == newPosition)
+		{
+			return false;
+		}
+	}
+
 	// 땅인 경우 가능. 그외 다 불가능
 	for (std::shared_ptr<Actor> actor : actorList)
 	{
-		if (actor->GetPosition() != newPosition)
+		if (actor->GetPosition() == newPosition)
 		{
-			continue;
+			if (actor->IsTypeOf<Ground>())
+				return true;
 		}
-		// Ground 보기 전 Tile있으면 false 리턴
-		if (actor->IsTypeOf<ActiveTile>()) 
-			return false;
-
-		if (actor->IsTypeOf<Ground>())
-			return true;
+		
 	}
 
 	return false;

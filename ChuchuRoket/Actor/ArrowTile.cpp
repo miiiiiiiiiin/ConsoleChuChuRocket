@@ -7,7 +7,7 @@
 using namespace Craft;
 
 ArrowTile::ArrowTile(const Vector2& position)
-	: Actor(L"⮆", position, Color::YELLOW)
+	: Actor(L"⮞", position, Color::YELLOW)
 	, startPosition(position)
 {
 	sortingOrder = 3;
@@ -45,31 +45,33 @@ void ArrowTile::Tick(float deltaTime)
 	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
 	if (CanMove)
 	{
-		// wasd: 이동
+		// wasd: 화살표 변경
 		if (Input::Get().GetKeyDown('W')) 
-			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), level));
-
-		if (Input::Get().GetKeyDown('A'))
-			SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), level));
-
-		if (Input::Get().GetKeyDown('S'))
-			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), level));
-
-		if (Input::Get().GetKeyDown('D'))
-			SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), level));
-
-		// 방향키: 화살표 변경
-		if (Input::Get().GetKeyDown(VK_UP))
 			ArrowSelect(L"⮝", Up);
 
-		if (Input::Get().GetKeyDown(VK_DOWN))
-			ArrowSelect(L"⮟", Up);
-
-		if (Input::Get().GetKeyDown(VK_LEFT))
+		if (Input::Get().GetKeyDown('A'))
 			ArrowSelect(L"⮜", Up);
 
-		if (Input::Get().GetKeyDown(VK_RIGHT))
+		if (Input::Get().GetKeyDown('S'))
+			ArrowSelect(L"⮟", Up);
+
+		if (Input::Get().GetKeyDown('D'))
 			ArrowSelect(L"⮞", Up);
+
+		// 방향키: 이동
+		if (Input::Get().GetKeyDown(VK_UP))
+			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), level));
+
+		if (Input::Get().GetKeyDown(VK_DOWN))
+			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), level));
+
+		if (Input::Get().GetKeyDown(VK_LEFT))
+			SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), level));
+
+		if (Input::Get().GetKeyDown(VK_RIGHT))
+			SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), level));
+
+
 
 		// r: 확정 (초기 위치로 리셋, 방향키 다썻으면 destroy)
 		if (Input::Get().GetKeyDown('R'))
@@ -82,7 +84,7 @@ void ArrowTile::Tick(float deltaTime)
 			if (level)
 			{
 				// 1. 현재 위치 + 방향으로 "영구 타일" 확정 생성.
-				level->SpawnActor<ActiveTile>(GetPosition(), tileDir);
+				level->SpawnActor<ActiveTile>(image, GetPosition(), tileDir);
 
 				// 다음 화살표를 배치하기 위한 새 커서 스폰.
 				//    초기 위치(시작 지점)에서 다시 시작.
