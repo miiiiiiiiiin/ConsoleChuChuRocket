@@ -5,6 +5,7 @@
 #include <Actor/Enemy.h>
 #include <Actor/Ground.h>
 #include <Actor/ArrowTile.h>
+#include <Actor/ActiveTile.h>
 
 #include <cassert>
 
@@ -25,15 +26,18 @@ bool GameLevel::CanMove(
 	// 땅인 경우 가능. 그외 다 불가능
 	for (std::shared_ptr<Actor> actor : actorList)
 	{
-		// 현재 액터가 다음 이동하는 위치랑 겹칠 경우
-		if (actor->GetPosition() == newPosition)
+		if (actor->GetPosition() != newPosition)
 		{
-			if (actor->IsTypeOf<Ground>())
-			{
-				return true;
-			}
+			continue;
 		}
+		// Ground 보기 전 Tile있으면 false 리턴
+		if (actor->IsTypeOf<ActiveTile>()) 
+			return false;
+
+		if (actor->IsTypeOf<Ground>())
+			return true;
 	}
+
 	return false;
 }
 

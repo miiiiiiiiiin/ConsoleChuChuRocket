@@ -34,7 +34,11 @@ private:
 	// 타일 방향 정보
 	TileDir tileDir = TileDir::Left;
 
-	// 
+	// 이동 가능한지 확인
+	bool CanMove = true;
+
+	// 맨 처음 위치
+	Craft::Vector2 startPosition;
 
 };
 
