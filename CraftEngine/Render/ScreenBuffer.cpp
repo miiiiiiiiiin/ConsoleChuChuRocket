@@ -63,7 +63,7 @@ namespace Craft
 		//화면에 설정된 글자 수
 		DWORD writtenCount = 0;
 
-		BOOL result = FillConsoleOutputCharacterA(
+		BOOL result = FillConsoleOutputCharacterW(
 			buffer,
 			' ', // 공백으로 다 지워진거처럼
 			size.x * size.y, //요만큼
@@ -86,7 +86,7 @@ namespace Craft
 			static_cast<short>(size.y - 1)  // bottom
 		};
 
-		BOOL result = WriteConsoleOutputA(
+		BOOL result = WriteConsoleOutputW(
 			buffer,
 			charInfo, 
 			size, // charinfo 배열의 길이

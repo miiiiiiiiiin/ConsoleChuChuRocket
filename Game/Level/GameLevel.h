@@ -14,6 +14,7 @@ public:
 		const Craft::Vector2& playerPosition,
 		const Craft::Vector2& nextPosition
 	);
+
 private:
 	//레벨 초기화 함수
 	virtual void OnInitialized() override;

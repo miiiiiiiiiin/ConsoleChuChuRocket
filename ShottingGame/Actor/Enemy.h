@@ -15,10 +15,14 @@ class Enemy : public Craft::Actor
 		Right
 	};
 public:
-	Enemy(const std::string& image = "(oOo)", int yPosition = 5);
+	Enemy(const std::wstring& image = L"(oOo)", int yPosition = 5);
 private:
 	// 이벤트 함수 오버라이드
 	virtual void Tick(float deltaTime) override;
+
+	// 충돌 처리 함수 오버라이드
+	virtual void OnCollision(const std::shared_ptr<Actor>& other) override;
+
 private:
 	// 이동 방향 열거형 변수
 	MoveDirection direction = MoveDirection::None;

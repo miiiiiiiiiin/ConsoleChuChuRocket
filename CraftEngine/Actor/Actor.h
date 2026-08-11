@@ -20,7 +20,7 @@ namespace Craft
 
 	public:
 		Actor(
-			const std::string& image = "",
+			const std::wstring& image = L"",  
 			const Vector2 & position = Vector2::Zero,
 			Color color = Color::WHITE
 			
@@ -64,6 +64,16 @@ namespace Craft
 		//너비 반환 함수
 		inline int GetWidth() const { return width; }
 
+		// 액터의 이미지 설정 함수
+		inline void ChangeImage(const std::wstring& newImage)
+		{
+			// 이미지 길이 설정
+			width = static_cast<int>(newImage.length());
+
+			// 새로운 글자값 설정
+			image = newImage;
+		}
+
 	protected:
 		//BEginPlay이벤트 처리 여부 플래그
 		bool hasBeganPlay = false;
@@ -79,7 +89,7 @@ namespace Craft
 		std::weak_ptr<Level> owner;
 
 		//화면에 그릴 글자
-		std::string image;
+		std::wstring image;
 
 		//글자 색상
 		Color color = Color::WHITE;

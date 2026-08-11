@@ -44,7 +44,7 @@ namespace Craft
     }
 
     void Renderer::Submit
-        (const std::string& image, 
+        (const std::wstring& image, 
         const Vector2& position, 
         Color color, 
         int sortingOrder)
@@ -142,7 +142,7 @@ namespace Craft
                     continue;
 
                 // 2차원 배열에 글자, 속성 설정
-                frame->charInfoArray[index].Char.AsciiChar
+                frame->charInfoArray[index].Char.UnicodeChar
                     = command.image[sourceIndex];
 
                 //글자 색상 값 설정
@@ -215,7 +215,7 @@ namespace Craft
     			// 글자 항목 초기화.
     			CHAR_INFO& info = charInfoArray[index];
     			// 빈문자 설정 - 기존의 설정된 값 지우기.
-    			info.Char.AsciiChar = ' ';
+    			info.Char.UnicodeChar = ' ';
     			// 색상 표기 안함.
     			info.Attributes = 0;
     

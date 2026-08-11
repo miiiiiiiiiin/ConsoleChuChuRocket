@@ -1,4 +1,4 @@
-#include "MenuLevel.h"
+﻿#include "MenuLevel.h"
 #include <Game/Game.h>
 #include <Input/Input.h>
 #include <Render/Renderer.h>
@@ -10,7 +10,7 @@ MenuLevel::MenuLevel()
 	// 메뉴 아이템 생성
 	itemList.emplace_back(
 		std::make_unique<MenuItem>(
-			"Resume Game",
+			L"Resume Game",
 			[]()
 			{
 				// 메뉴 토글 함수 호출
@@ -22,7 +22,7 @@ MenuLevel::MenuLevel()
 	// 메뉴 아이템 생성
 	itemList.emplace_back(
 		std::make_unique<MenuItem>(
-			"Quit Game",
+			L"Quit Game",
 			[]()
 			{
 				// 게임 종료 호출
@@ -77,7 +77,7 @@ void MenuLevel::Tick(float deltaTime)
 void MenuLevel::Draw()
 {
 	//제목 그리기
-	Renderer::Get().Submit("Sokoban Game", Vector2::Zero);
+	Renderer::Get().Submit(L"Sokoban Game", Vector2::Zero);
 
 	// 메뉴 아이템 그리기
 	const int count = static_cast<int>(itemList.size());

@@ -3,9 +3,11 @@
 #include <Engine/Engine.h>
 #include<Actor/EnemyBullet.h>
 #include <Level/Level.h>
+#include <Actor/PlayerBullet.h>
+#include <Actor/DestroyEffect.h>
 
 using namespace Craft;
-Enemy::Enemy(const std::string& image, int yPosition)
+Enemy::Enemy(const std::wstring& image, int yPosition)
 	: Actor(image)
 {
 	// 랜덤 (오른쪽 왼쪽 이동할지결정)
@@ -58,8 +60,6 @@ void Enemy::Tick(float deltaTime)
 	// 위치 설정
 	SetPosition(Vector2(static_cast<int>(xPosition), GetPosition().y));
 
-	//발사
-
 	// 타이머 시간 업데이트
 	timer.Tick(deltaTime);
 	if (!timer.isTimeOut())
@@ -82,4 +82,27 @@ void Enemy::Tick(float deltaTime)
 			bulletPosition, Util::RandomRange(10.0f, 20.0f)
 		);
 	}
+}
+
+void Enemy::OnCollision(const std::shared_ptr<Actor>& other)
+{
+	super::OnCollision(other);
+	// 충돌한 다른 액터가 플레이어 탄약이면 삭제
+	//커스텀 타입 활용
+	if (other->IsTypeOf<PlayerBullet>())
+	{
+		// 플레이어 탄약 제거
+		other->Destroy();
+
+		// 적 액터 제거
+		Destroy();
+
+		// 적 파괴 이펙트 생성
+		if (GetOwner())
+		{
+			GetOwner()->SpawnActor<DestroyEffect>(GetPosition());
+		}
+	}
+
+
 }

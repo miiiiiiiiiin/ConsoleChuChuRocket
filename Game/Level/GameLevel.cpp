@@ -158,7 +158,7 @@ void GameLevel::Draw()
 	{
 		// 렌더러를 사용해서 게임 클리어 표시
 		Renderer::Get().Submit(
-			"Game Clear!",
+			L"Game Clear!",
 			Vector2(25, 0)
 		);
 	}
@@ -193,7 +193,7 @@ void GameLevel::LoadMap(const std::string& filename)
 	size_t readSize = fread(buffer, sizeof(char), fileSize, file);
 
 	// 어서트
-	assert(readSize > 0 && "No data in the stage file.");
+	assert(readSize > 0 && L"No data in the stage file.");
 
 	//Todo: 읽은 데이터를 기반으로 로직 제작
 	//1. 화면에 액터 그리기

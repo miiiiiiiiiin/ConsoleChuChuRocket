@@ -3,7 +3,7 @@
 using namespace Craft;
 
 EnemyBullet::EnemyBullet(const Craft::Vector2& position, float moveSpeed)
-	: Actor("#", position, Color::RED),
+	: Actor(L"#", position, Color::RED),
 	moveSpeed(moveSpeed), yPosition(static_cast<float>(position.y))
 {
 }
@@ -16,7 +16,7 @@ void EnemyBullet::Tick(float deltaTime)
 	yPosition += moveSpeed * deltaTime;
 
 	// 좌표 검사
-	if (yPosition >= Engine::Get().GetHeight())
+	if (yPosition >= Engine::Get().GetHeight() - 1)
 	{
 		Destroy();
 		return;

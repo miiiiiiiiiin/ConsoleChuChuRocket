@@ -5,7 +5,7 @@
 
 using namespace Craft;
 Player::Player(const Vector2& position)
-	: Actor("P", position, Color::GREEN)
+	: Actor(L"P", position, Color::GREEN)
 {
 	// 우선순위 설정
 	// 액터 중 가장 높은 값
@@ -31,11 +31,8 @@ void Player::Tick(float deltaTime)
 		return;
 	}
 	// 이동 처리를 위해 GameLevel 객체 얻어오기
-	// 다운캐스팅 :위험 -> 형변환 실패하면 null 반환
+	// 다운캐스팅: 위험 -> 형변환 실패하면 null 반환
 	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
-
-
-
 	
 	// 이동 처리
 	if (Input::Get().GetKeyDown(VK_RIGHT))
