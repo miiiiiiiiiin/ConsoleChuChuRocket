@@ -1,69 +1,236 @@
-# Prerequisites
-*.d
+# ============================================
 
-# Compiled Object files
-*.slo
-*.lo
+# Project folders
+
+# ============================================
+
+# 개인/별도 게임 프로젝트
+
+ShottingGame/
+Game/
+
+# Build output
+
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Bb]uild/
+[Bb]uild-*/
+
+# Visual Studio
+
+.vs/
+
+# ============================================
+
+# C/C++ compiled files
+
+# ============================================
+
 *.o
 *.obj
+*.lo
+*.slo
 
-# Precompiled Headers
+# Precompiled headers
+
 *.gch
 *.pch
 
-# Linker files
+# Debug / linker files
+
 *.ilk
-
-# Debugger Files
 *.pdb
+*.idb
+*.iobj
+*.ipdb
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-*.so.*
+# Static / dynamic libraries
 
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
 *.lib
+*.la
+*.lai
+*.so
+*.so.*
+*.dylib
+*.dll
 
 # Executables
+
 *.exe
 *.out
 *.app
 
-# Build directories
-build/
-Build/
-build-*/
+# ============================================
 
-# CMake generated files
+# Visual Studio generated files
+
+# ============================================
+
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+*.VC.db
+*.VC.VC.opendb
+*.opendb
+*.opensdf
+*.sdf
+*.ncb
+*.aps
+
+ipch/
+Generated\ Files/
+
+*.tlog
+*.tmp
+*.log
+*.cache
+*.binlog
+
+*.trx
+*.coverage
+*.coveragexml
+
+# ============================================
+
+# CMake
+
+# ============================================
+
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
-install_manifest.txt
 compile_commands.json
+install_manifest.txt
+Makefile
 
-# Temporary files
-*.tmp
-*.log
-*.bak
-*.swp
+# ============================================
+
+# NuGet / Packages
+
+# ============================================
+
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+*.nupkg
+*.snupkg
+
+# ============================================
 
 # vcpkg
+
+# ============================================
+
 vcpkg_installed/
 
-# debug information files
-*.dwo
+# ============================================
 
-# test output & cache
+# Test / Coverage
+
+# ============================================
+
 Testing/
 .cache/
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# ============================================
+
+# Temporary / Backup files
+
+# ============================================
+
+*.tmp
+*.bak
+*.swp
+*.scc
+*.pidb
+*.jfm
+*~
+~$*
+
+# Local history
+
+.history/
+.localhistory/
+.vshistory/
+
+# ============================================
+
+# Environment / User settings
+
+# ============================================
+
+*.env
+*.pfx
+*.publishsettings
+
+# ============================================
+
+# Node.js / VS Code
+
+# ============================================
+
+node_modules/
+.vscode/
+
+# Keep VS Code project settings if needed
+
+# !.vscode/settings.json
+
+# !.vscode/tasks.json
+
+# !.vscode/launch.json
+
+# !.vscode/extensions.json
+
+# ============================================
+
+# Other generated files
+
+# ============================================
+
+*.meta
+*.nupkg
+*.snupkg
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# SQL Server
+
+*.mdf
+*.ldf
+*.ndf
+*.dbmdl
+
+# NuGet / .NET generated
+
+artifacts/
+.artifacts/
+project.lock.json
+project.fragment.lock.json
+
+# Crash / profiler / analysis
+
+mono_crash.*
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.e2e
+*.dotCover
+NCrunch*/
+.NCrunch_*
+AutoTest.Net/
+OpenCover/
+BenchmarkDotNet.Artifacts/
