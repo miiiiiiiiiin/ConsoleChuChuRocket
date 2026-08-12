@@ -18,14 +18,14 @@ Vector2 ArrowTile::ArrowMove(
 	Craft::Vector2 nowPos, 
 	std::shared_ptr<GameLevel> level)
 {
-		//이동하려는 위치값 만들기
-		Vector2 newPosition = nowPos + dir;
+	//이동하려는 위치값 만들기
+	Vector2 newPosition = nowPos + dir;
 	
-		// 이동 가능 여부 확인
-		if (level && level->CanMove(nowPos, newPosition))
-		{
-			return newPosition;
-		}
+	// 이동 가능 여부 확인
+	if (level && level->CanMove(nowPos, newPosition))
+	{
+		return newPosition;
+	}
 	return nowPos;
 }
 
@@ -47,16 +47,16 @@ void ArrowTile::Tick(float deltaTime)
 	{
 		// wasd: 화살표 변경
 		if (Input::Get().GetKeyDown('W')) 
-			ArrowSelect(L"⮝", Up);
+			ArrowSelect(L"⮝", TileDir::Up);
 
 		if (Input::Get().GetKeyDown('A'))
-			ArrowSelect(L"⮜", Up);
+			ArrowSelect(L"⮜", TileDir::Left);
 
 		if (Input::Get().GetKeyDown('S'))
-			ArrowSelect(L"⮟", Up);
+			ArrowSelect(L"⮟", TileDir::Down);
 
 		if (Input::Get().GetKeyDown('D'))
-			ArrowSelect(L"⮞", Up);
+			ArrowSelect(L"⮞", TileDir::Right);
 
 		// 방향키: 이동
 		if (Input::Get().GetKeyDown(VK_UP))

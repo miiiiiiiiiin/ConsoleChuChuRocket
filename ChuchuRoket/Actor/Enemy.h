@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Actor/Actor.h>
 
 class Enemy : public Craft::Actor

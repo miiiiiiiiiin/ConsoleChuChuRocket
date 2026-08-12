@@ -1,41 +1,56 @@
 ﻿#pragma once
+#include "TileDir.h"
+#include<Level/Level.h>
 #include<Actor/Actor.h>
+#include <Level/GameLevel.h>
+#include <setTimer/Timer.h>
+
 class Mouse : public Craft::Actor
 {
 	TYPE_DECLARATIONS(Mouse, Actor)
 
-	//현재 쥐가 바라보는 방향
-	enum MouseDir
-	{
-		Left,
-		Right,
-		Up,
-		Down
-	};
+	//현재 쥐가 바라보는 방향. 타일의 방향 정보와 비교하여 변경한다.
 
 public:
 	Mouse(const Craft::Vector2& position);
 
 private:
-	// 플래그 뜨면 쥐 이동
-	// 기호 방향에 맞춰서 직진 이동 함수
-	// Dir: 
+
 	virtual void Tick(float deltaTime) override;
 
 	//쥐가 바라보고 있는 방향 설정. 
 	//벽 부딪히면 90회전
 	void MousePrsp();
 
+	// 플래그 뜨면 쥐 이동
+	// 기호 방향에 맞춰서 직진 이동 함수
+	// Dir: 
+	Craft::Vector2 MouseMoveDirChange();
+
 	virtual void OnCollision(const std::shared_ptr<Actor>& other) override;
+
+	// 화살표 타일 방향 확인 함수
+	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
 
 private:
 	//현재 위치
 	Craft::Vector2 position;
-	MouseDir direction = MouseDir::Left;
 
-	
+	// 쥐가 바라보는 방향
+	TileDir direction = TileDir::Right;
 
+	//y 이동 변수
+	float yPosition;
 
+	// x 이동 변수
+	float xPosition;
 
+	// 이동 속도
+	float moveSpeed = 3.0f;
+
+	//시작되었다면 Tick 실행
+	bool isStart = true;
+
+	Timer timer;
 };
 

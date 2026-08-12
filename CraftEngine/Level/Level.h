@@ -56,6 +56,27 @@ namespace Craft
 			return newActor;
 		}
 
+		// 특정 위치에 있는 특정 타입의 액터를 찾는 함수.
+		template<typename T,
+			typename = std::enable_if_t<std::is_base_of<Actor, T>::value>>
+			std::shared_ptr<T> FindActorAt(const Vector2& position)
+		{
+			for (const auto& actor : actorList)
+			{
+				if (actor->GetPosition() != position)
+				{
+					continue;
+				}
+
+				std::shared_ptr<T> target = std::dynamic_pointer_cast<T>(actor);
+				if (target)
+				{
+					return target;
+				}
+			}
+			return nullptr;
+		}
+
 
 		//액터 검색 함수(템플릿)
 		template<typename T,

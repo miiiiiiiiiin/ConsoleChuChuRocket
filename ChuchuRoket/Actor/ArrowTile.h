@@ -1,19 +1,13 @@
 ﻿#pragma once
 #include <Actor/Actor.h>
 #include <Level/GameLevel.h>
+#include "TileDir.h"
 
 class ArrowTile : public Craft::Actor
 {
 	TYPE_DECLARATIONS(ArrowTile, Actor)
 
-	// 화살표 방향
-	enum TileDir
-	{
-		Left,
-		Right,
-		Up,
-		Down
-	};
+	
 
 public:
 	ArrowTile(const Craft::Vector2& position);
