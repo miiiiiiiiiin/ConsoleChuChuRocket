@@ -62,7 +62,7 @@ namespace Craft
 	}
 	bool Vector2::operator!=(const Vector2& other) const
 	{
-		return (x != other.x) && (y != other.y);
+		return (x != other.x) || (y != other.y);
 		//return !(*this == other); 같은말임(난뭔말인지몰르겟슴)..
 	}
 }

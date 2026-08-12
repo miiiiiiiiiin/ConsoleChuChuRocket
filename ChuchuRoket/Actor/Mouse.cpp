@@ -7,6 +7,7 @@
 #include <Level/GameLevel.h>
 #include <setTimer/Timer.h>
 #include <Render/Renderer.h>
+
 using namespace Craft;
 Mouse::Mouse(const Craft::Vector2& position)
 	: Actor(L"⯈", position, Color::BRIGHTWHITE),
@@ -39,13 +40,7 @@ void Mouse::Tick(float deltaTime)
 
 		// Todo: Mouse와 ActiveTile의 TileDir을 같도록 만드는 로직 고치기
 		//2. 화살표 타일 확인 → 방향 갱신
-		//ArrowTileUpdateDirectionFromTile(level);
-		//if (level->isSamePosition(GetPosition(), newPosition))
-		//{
-		//
-		//}
-
-		
+		ArrowTileUpdateDirectionFromTile(level);
 
 		// 다음위치 검사햇을때 이동불가면 90도 회전
 		if (!level->CanMove(GetPosition(), newPosition)) {
@@ -102,19 +97,14 @@ Vector2 Mouse::MouseMoveDirChange()
 	return Vector2(0, 0);
 	
 }
-
-void Mouse::OnCollision(const std::shared_ptr<Actor>& other)
-{
-	
-}
-
 void Mouse::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level)
 {
-	std::shared_ptr<ActiveTile> tiledir = level->FindActorAt<ActiveTile>(GetPosition());
+	auto mousePos = GetPosition();
+	auto tiledir = level->FindActorAt<ActiveTile>(mousePos);
 
 	if (tiledir != nullptr)
 	{
-		direction = tiledir->GetDir();   // switch 없이 바로 대입
+		direction = tiledir->GetDir();
 	}
 }
 

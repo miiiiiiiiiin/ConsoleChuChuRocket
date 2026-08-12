@@ -27,8 +27,6 @@ private:
 	// Dir: 
 	Craft::Vector2 MouseMoveDirChange();
 
-	virtual void OnCollision(const std::shared_ptr<Actor>& other) override;
-
 	// 화살표 타일 방향 확인 함수
 	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
 	void SetDir(TileDir dir) { direction = dir; }
