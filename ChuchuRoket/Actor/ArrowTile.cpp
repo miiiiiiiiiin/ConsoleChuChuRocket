@@ -36,14 +36,25 @@ void ArrowTile::ArrowSelect(std::wstring str, TileDir dir)
 	tileDir = dir;
 }
 
+bool ArrowTile::canStart(std::shared_ptr<GameLevel> gamelevel)
+{
+	// CanMove인지 아닌지 다시설정
+	//std::shared_ptr<GameLevel> gamelevel = Cast<GameLevel>(GetOwner());
+	// 화살표 카운트 내리기
+	gamelevel->DecreaseArrowCount();
+	//카운트 0이면 그만 생성
+	if (gamelevel->GetRemainingArrowCount() <= 0) return false;
+	return true;
+}
+
 void ArrowTile::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
 	// 이동 처리를 위해 GameLevel 객체 얻어오기
 	// 다운캐스팅: 위험 -> 형변환 실패하면 null 반환
-	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
-	if (CanMove)
+	std::shared_ptr<GameLevel> gamelevel = Cast<GameLevel>(GetOwner());
+	if (gamelevel->GetisCanMove())
 	{
 		// wasd: 화살표 변경
 		if (Input::Get().GetKeyDown('W')) 
@@ -60,21 +71,21 @@ void ArrowTile::Tick(float deltaTime)
 
 		// 방향키: 이동
 		if (Input::Get().GetKeyDown(VK_UP))
-			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), level));
+			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), gamelevel));
 
 		if (Input::Get().GetKeyDown(VK_DOWN))
-			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), level));
+			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), gamelevel));
 
 		if (Input::Get().GetKeyDown(VK_LEFT))
-			SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), level));
+			SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), gamelevel));
 
 		if (Input::Get().GetKeyDown(VK_RIGHT))
-			SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), level));
+			SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), gamelevel));
 
 
 
 		// r: 확정 (초기 위치로 리셋, 방향키 다썻으면 destroy)
-		if (Input::Get().GetKeyDown('R'))
+		if (Input::Get().GetKeyDown(VK_RETURN))
 		{
 			// 여기서 정지.
 			//CanMove = false;
@@ -84,11 +95,18 @@ void ArrowTile::Tick(float deltaTime)
 			if (level)
 			{
 				// 1. 현재 위치 + 방향으로 "영구 타일" 확정 생성.
+				OutputDebugStringA("ActiveTile Spawned!\n");
 				level->SpawnActor<ActiveTile>(image, GetPosition(), tileDir);
+
+				// CanMove인지 아닌지 다시설정
+				gamelevel->SetisCanMove(canStart(gamelevel));
 
 				// 다음 화살표를 배치하기 위한 새 커서 스폰.
 				//    초기 위치(시작 지점)에서 다시 시작.
-				level->SpawnActor<ArrowTile>(startPosition);
+				if (gamelevel->GetisCanMove()) {
+					
+					level->SpawnActor<ArrowTile>(startPosition);
+				}
 			}
 			Destroy();
 		}

@@ -31,7 +31,7 @@ private:
 
 	// 화살표 타일 방향 확인 함수
 	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
-
+	void SetDir(TileDir dir) { direction = dir; }
 private:
 	//현재 위치
 	Craft::Vector2 position;

@@ -3,15 +3,16 @@
 
 #include <Actor/Wall.h>
 #include <Actor/ActiveTile.h>
+#include <Actor/ArrowTile.h>
 #include <Level/GameLevel.h>
 #include <setTimer/Timer.h>
-
+#include <Render/Renderer.h>
 using namespace Craft;
 Mouse::Mouse(const Craft::Vector2& position)
 	: Actor(L"⯈", position, Color::BRIGHTWHITE),
 	xPosition(GetPosition().x),
 	yPosition(GetPosition().y), 
-	timer(0.5f)
+	timer(0.1f)
 
 {
 	sortingOrder = 5;
@@ -22,7 +23,8 @@ void Mouse::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 	// Todo: 시작버튼 누르면 Tick 활성화되게 하기
-	if (isStart)
+	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
+	if (!level->GetisCanMove() && isStart)
 	{
 		//MouseMove(deltaTime);
 
@@ -31,15 +33,19 @@ void Mouse::Tick(float deltaTime)
 		if (!timer.isTimeOut())
 		{
 			return;
-		}
-
-		std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
-
-		//2. 화살표 타일 확인 → 방향 갱신
-		ArrowTileUpdateDirectionFromTile(level);
-
+		}		
 		//3. CanMove(현재방향) 확인
 		Vector2 newPosition = GetPosition() + MouseMoveDirChange();
+
+		// Todo: Mouse와 ActiveTile의 TileDir을 같도록 만드는 로직 고치기
+		//2. 화살표 타일 확인 → 방향 갱신
+		//ArrowTileUpdateDirectionFromTile(level);
+		//if (level->isSamePosition(GetPosition(), newPosition))
+		//{
+		//
+		//}
+
+		
 
 		// 다음위치 검사햇을때 이동불가면 90도 회전
 		if (!level->CanMove(GetPosition(), newPosition)) {
@@ -49,19 +55,13 @@ void Mouse::Tick(float deltaTime)
 			// 방향 바꾼 후 다음 위치도 이동 가능한지 확인
 			if (!level->CanMove(GetPosition(), newPosition))
 			{ 
-				// Todo: 게임오버 처리하기
+				// Todo: 게임오버 처리하기.여기서 겜오버 창을 띄우던지해야됨
 				isStart = false;
 				return;
 			}
 		}
 		SetPosition(newPosition);
 		timer.Reset();
-		//- true → 그대로 이동
-		//- false → 90도 회전
-		//4. 회전한 새 방향으로 CanMove 재확인
-		//- true → 이동
-		//- false → 게임 오버
-		//SetPosition(newPosition);
 	}
 	
 }
@@ -111,26 +111,10 @@ void Mouse::OnCollision(const std::shared_ptr<Actor>& other)
 void Mouse::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level)
 {
 	std::shared_ptr<ActiveTile> tiledir = level->FindActorAt<ActiveTile>(GetPosition());
-	if (tiledir)
+
+	if (tiledir != nullptr)
 	{
-		switch (tiledir->GetDir())
-		{
-		case TileDir::Right:
-			direction = TileDir::Right;
-			break;
-
-		case TileDir::Left:
-			direction = TileDir::Left;
-			break;
-
-		case TileDir::Up:
-			direction = TileDir::Up;
-			break;
-
-		case TileDir::Down:
-			direction = TileDir::Down;
-			break;
-		}
+		direction = tiledir->GetDir();   // switch 없이 바로 대입
 	}
 }
 
