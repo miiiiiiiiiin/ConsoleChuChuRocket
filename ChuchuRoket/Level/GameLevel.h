@@ -39,6 +39,7 @@ private:
 	//맵 로드 함수
 	void LoadMap(const std::string& filename);
 
+
 private:
 	//목표 점수 - 클리어 조건
 	int targetScore = 0;
@@ -54,5 +55,7 @@ private:
 	// 남은 화살표 개수
 	int remainingArrowCount = 0;
 
+	// 몬스터 경로 넣는 리스트
+	std::vector<Craft::Vector2> EnemyList;
 };
 

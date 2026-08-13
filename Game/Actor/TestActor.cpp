@@ -21,7 +21,6 @@ void TestActor::Tick(float deltaTime)
 	//fprintf_s(fpsString, size, "dfsfd", )
 	//SetConsoleTitleA(fpsString)
 
-	//TODO: 임시 처리
 	//esc 누르면 종료
 	if(Input::Get().GetKeyDown(VK_ESCAPE))
 	{

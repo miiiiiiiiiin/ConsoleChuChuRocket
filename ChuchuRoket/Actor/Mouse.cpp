@@ -5,6 +5,7 @@
 #include <Actor/ActiveTile.h>
 #include <Actor/ArrowTile.h>
 #include <Actor/Goal.h>
+#include <Actor/Enemy.h>
 #include <Level/GameLevel.h>
 #include <setTimer/Timer.h>
 #include <Render/Renderer.h>
@@ -16,7 +17,8 @@ Mouse::Mouse(const Craft::Vector2& position)
 	: Actor(L"⯈", position, Color::BRIGHTWHITE),
 	xPosition(GetPosition().x),
 	yPosition(GetPosition().y), 
-	timer(0.1f)
+	timer(0.1f), 
+	infiniteMouseTime(10.0f)
 {
 	sortingOrder = 5;
 	//timer.SetTargetTime(0.5f);
@@ -25,48 +27,57 @@ Mouse::Mouse(const Craft::Vector2& position)
 void Mouse::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
+	Game& game = dynamic_cast<Game&>(Engine::Get());
 	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
 	if (!level->GetisCanMove() && !isBreak)
 	{
 		//MouseMove(deltaTime);
-
-		//1. 타이머 체크(아직 이동 타이밍 아니면 리턴)
+		// 쥐 움직이기 시작
+		infiniteMouseTime.Tick(deltaTime);
+		// 0. 타이머 체크(아직 이동 타이밍 아니면 리턴)
 		timer.Tick(deltaTime);
 		if (!timer.isTimeOut())
 		{
 			return;
 		}
-		//0. 골인지 확인: 맞다면 리턴
+		if (infiniteMouseTime.isTimeOut())
+		{
+			game.GoToGameLevel();
+			return;
+		}
+		//1. 골인지 확인: 맞다면 리턴
 		if (isGoal(level))
 		{
-			//1. 화면 바꾸기 Clear! 화면으로....
-			//Game& game = dynamic_cast<Game&>(Engine::Get());
-			//game.SetisClear(true);
+			// 화면 바꾸기 Clear! 화면으로....
 			level->SetisClear(true);
-			//isBreak;
+			return;
+		}
+
+		//2. 적인지 확인
+		if (isEnemy(level))
+		{
+			//isBreak = true;
+			game.GoToGameLevel();
 			return;
 		}
 		
 		Vector2 newPosition = GetPosition() + MouseMoveDirChange();
-
-		// Todo: Mouse와 ActiveTile의 TileDir을 같도록 만드는 로직 고치기
-		//2. 화살표 타일 확인 → 방향 갱신
+		//3. 화살표 타일 확인 → 방향 갱신
 		ArrowTileUpdateDirectionFromTile(level);
 
-		//3. CanMove(현재방향) 확인
+		//4. CanMove(현재방향) 확인
 		// 다음위치 검사햇을때 이동불가면 90도 회전
 		if (!level->CanMove(GetPosition(), newPosition)) {
 			// 회전
 			MousePrsp();
 			newPosition = GetPosition() + MouseMoveDirChange();
-			// 방향 바꾼 후 다음 위치도 이동 가능한지 확인
+			// 방향 바꾼 후 다음 위치도 이동 가능한지 확인. 아니면 겜오버
 			if (!level->CanMove(GetPosition(), newPosition))
 			{ 
-				// 여기서 AtPosition인가그걸로 골 위치랑 같은위치인지 확인하고 맞다면 겜 클리어 ㄱㄱ
-
-
 				// Todo: isBreak로 게임오버 처리하기.여기서 겜오버 창을 띄우던지해야됨
-				isBreak = true;
+				// -> 다시 리셋하는걸로 함
+				//isBreak = true;
+				game.GoToGameLevel();
 				return;
 			}
 		}
@@ -118,6 +129,18 @@ bool Mouse::isGoal(std::shared_ptr<GameLevel> level)
 	auto mousePos = GetPosition() + MouseMoveDirChange();
 	// 여기서 AtPosition인가그걸로 골 위치랑 같은위치인지 확인하고 맞다면 겜 클리어 ㄱㄱ
 	auto tiledir = level->FindActorAt<Goal>(mousePos);
+	if (tiledir)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Mouse::isEnemy(std::shared_ptr<GameLevel> level)
+{
+	auto mousePos = GetPosition() + MouseMoveDirChange();
+	// 여기서 AtPosition인가그걸로 골 위치랑 같은위치인지 확인하고 맞다면 겜 클리어 ㄱㄱ
+	auto tiledir = level->FindActorAt<Enemy>(mousePos);
 	if (tiledir)
 	{
 		return true;

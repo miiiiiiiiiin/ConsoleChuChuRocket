@@ -25,7 +25,7 @@ void Game::MainToGame()
 	mainLevel = levelList[1];
 	state = static_cast<State>(1);
 }
-// Game.cpp
+
 void Game::GoToClearLevel()
 {
 	mainLevel = levelList[3];   // ClearLevel 인덱스

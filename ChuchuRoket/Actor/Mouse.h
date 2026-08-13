@@ -30,6 +30,9 @@ private:
 	// 골인지 확인하는 함수
 	bool isGoal(std::shared_ptr<GameLevel> level);
 
+	// 몬스터인지 확인하는 함수
+	bool isEnemy(std::shared_ptr<GameLevel> level);
+
 	// 화살표 타일 방향 확인 함수
 	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
 
@@ -55,5 +58,6 @@ private:
 	bool isBreak = false;
 
 	Timer timer;
+	Timer infiniteMouseTime;
 };
 

@@ -17,8 +17,9 @@ void GameLevel::OnInitialized()
 {
 	Level::OnInitialized();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	// Todo: 파일 읽어서 맵 로드
-	LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
+	// 파일 읽어서 맵 로드
+	//LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
+	LoadMap("TileMap1.txt");
 	ProcessAddAndDestroyActors();
 }
 
@@ -28,7 +29,7 @@ void GameLevel::Draw()
 {
 	Level::Draw();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	std::wstring text = L"ArrowTile Count: " + std::to_wstring(remainingArrowCount);
+	std::wstring text = L"ArrowTile	Count: " + std::to_wstring(remainingArrowCount);
 	Renderer::Get().Submit(text, Vector2(23, 4));
 	Renderer::Get().Submit(L"Stage" + std::to_wstring(game.GetStageNum()), Vector2(23, 5));
 }
@@ -209,9 +210,20 @@ void GameLevel::LoadMap(const std::string& filename)
 			SpawnActor<Goal>(position);
 			targetScore++;
 			break;
+		case 'M':
+			//SpawnActor<Enemy>(position);
+			SpawnActor<Ground>(position);
+			EnemyList.emplace_back(position);
+			targetScore++;
+			break;
 		}
 
 		++position.x;
+	}
+
+	if (!EnemyList.empty())
+	{
+		SpawnActor<Enemy>(EnemyList);   // 모은 경로 전체를 몬스터 1마리에게 통째로 전달
 	}
 
 	delete[] buffer;

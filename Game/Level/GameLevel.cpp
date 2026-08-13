@@ -195,7 +195,6 @@ void GameLevel::LoadMap(const std::string& filename)
 	// 어서트
 	assert(readSize > 0 && L"No data in the stage file.");
 
-	//Todo: 읽은 데이터를 기반으로 로직 제작
 	//1. 화면에 액터 그리기
 
 	//문자열에 저장된 값을 접근할 때 사용할 인덱스
