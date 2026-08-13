@@ -18,7 +18,7 @@ Mouse::Mouse(const Craft::Vector2& position)
 	xPosition(GetPosition().x),
 	yPosition(GetPosition().y), 
 	timer(0.1f), 
-	infiniteMouseTime(10.0f)
+	infiniteMouseTime(20.0f)
 {
 	sortingOrder = 5;
 	//timer.SetTargetTime(0.5f);

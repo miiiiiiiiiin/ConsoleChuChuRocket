@@ -31,6 +31,7 @@ void ClearLevel::Tick(float deltaTime)
 		if (game.GetisTimeOut())
 		{
 			game.SetisClear(false);
+			// Todo: dd
 			if (game.GetStageNum() > 5)
 			{
 				// 스테이지 5 넘으면 불러오기 중지

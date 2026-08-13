@@ -71,7 +71,7 @@ void ArrowTile::Tick(float deltaTime)
 
 		// 방향키: 이동
 		if (Input::Get().GetKeyDown(VK_UP))
-			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), gamelevel));
+			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), gamelevel)); 
 
 		if (Input::Get().GetKeyDown(VK_DOWN))
 			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), gamelevel));

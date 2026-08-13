@@ -49,7 +49,6 @@ namespace Craft
 			//추가 요청 목록에 포함
 			addRequestedActorList.emplace_back(newActor);
 
-			//Todo:오너십 설정(내가널소유한다)
 			newActor->SetOwner(weak_from_this());
 
 			//생성한 액터 반환

@@ -18,8 +18,8 @@ void GameLevel::OnInitialized()
 	Level::OnInitialized();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
 	// 파일 읽어서 맵 로드
-	//LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
-	LoadMap("TileMap1.txt");
+	LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
+	//LoadMap("TileMap4.txt");
 	ProcessAddAndDestroyActors();
 }
 
@@ -30,8 +30,12 @@ void GameLevel::Draw()
 	Level::Draw();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
 	std::wstring text = L"ArrowTile	Count: " + std::to_wstring(remainingArrowCount);
-	Renderer::Get().Submit(text, Vector2(23, 4));
-	Renderer::Get().Submit(L"Stage" + std::to_wstring(game.GetStageNum()), Vector2(23, 5));
+	Renderer::Get().Submit(text, Vector2(23, 2));
+	Renderer::Get().Submit(L"Stage" + std::to_wstring(game.GetStageNum()), Vector2(23, 3));
+	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(23, 4));
+	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(23, 5));
+	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(23, 6));
+	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(23, 7));
 }
 
 void GameLevel::Tick(float deltaTime)
