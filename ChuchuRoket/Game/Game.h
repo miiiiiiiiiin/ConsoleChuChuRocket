@@ -34,16 +34,16 @@ public:
 
 public:
 	// 게터세터
-	bool GetisClear() { return isClear; }
+	bool GetisClear() const { return isClear; }
 	void SetisClear(bool clear) { isClear = clear; }
 
 	void ResetTime() { timer.Reset(); }
 	void SetTimer(float time) { timer.SetTargetTime(time); }
 	void SetTick(float time) { timer.Tick(time); }
-	bool GetisTimeOut() { return timer.isTimeOut(); }
+	bool GetisTimeOut() const { return timer.isTimeOut(); }
 
 	// 스테이지넘버 겟셋
-	int GetStageNum() { return StageNum; }
+	int GetStageNum() const { return StageNum; }
 	void SetStageNum(int stagenum) { StageNum = stagenum; }
 	void StageNumCounting() { StageNum++; }
 

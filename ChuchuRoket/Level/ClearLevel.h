@@ -11,8 +11,6 @@ public:
 	virtual void Tick(float deltaTime) override;
 	virtual void Draw() override;
 private:
-
-
 	Timer timer;
 };
 
