@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <Level/Level.h>
 #include <string>
+#include <Engine/Engine.h>
+#include <Game/Game.h>
 class GameLevel : public Craft::Level
 {
 	TYPE_DECLARATIONS(GameLevel, Level)
@@ -22,6 +24,8 @@ public:
 	bool GetisCanMove() const { return isCanMove; }
 	void SetisCanMove(bool ismove) { isCanMove = ismove; }
 
+	void SetisClear(bool isclear) { isGameClear = isclear; }
+
 
 private:
 	//레벨 초기화 함수
@@ -29,6 +33,8 @@ private:
 
 	//Draw 이벤트 함수
 	virtual void Draw() override;
+
+	virtual void Tick(float deltaTime) override;
 
 	//맵 로드 함수
 	void LoadMap(const std::string& filename);
@@ -40,11 +46,10 @@ private:
 	// 화살표 움직이게하는 플래그. false 되면 화살표못움직이고 쥐돌이가움직인다
 	bool isCanMove = true;
 
-
+	// 게임 클리어되었느닞 확인하는 플래그.
 	bool isGameClear = false;
 
 	// 게임 스테이지 번호
-	int StageNum = 1;
 
 	// 남은 화살표 개수
 	int remainingArrowCount = 0;

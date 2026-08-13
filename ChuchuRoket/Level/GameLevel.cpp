@@ -7,11 +7,54 @@
 #include <Actor/ArrowTile.h>
 #include <Actor/ActiveTile.h>
 #include <Render/Renderer.h>
+#include <Game/Game.h>
 
 #include <cassert>
 #include <vector>
 
 using namespace Craft;
+void GameLevel::OnInitialized()
+{
+	Level::OnInitialized();
+	Game& game = dynamic_cast<Game&>(Engine::Get());
+	// Todo: 파일 읽어서 맵 로드
+	LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
+	ProcessAddAndDestroyActors();
+}
+
+
+//Draw 이벤트 함수
+void GameLevel::Draw()
+{
+	Level::Draw();
+	Game& game = dynamic_cast<Game&>(Engine::Get());
+	std::wstring text = L"ArrowTile Count: " + std::to_wstring(remainingArrowCount);
+	Renderer::Get().Submit(text, Vector2(23, 4));
+	Renderer::Get().Submit(L"Stage" + std::to_wstring(game.GetStageNum()), Vector2(23, 5));
+}
+
+void GameLevel::Tick(float deltaTime)
+{
+	super::Tick(deltaTime);
+	if (isGameClear)
+	{
+		Game& game = dynamic_cast<Game&>(Engine::Get());
+
+		// 스테이지넘버 숫자 올리기
+		game.StageNumCounting();
+
+		// 클리어 화면 트리거 열기
+		game.SetisClear(true);
+
+		// 게임레벨 클리어 트리거 닫기
+		isGameClear = false;
+
+		// 클리어 화면으로 메인레벨 변경
+		game.GoToClearLevel();
+	}
+}
+
+
 bool GameLevel::CanMove(
 	const Craft::Vector2& playerPosition,
 	const Craft::Vector2& nextPosition)
@@ -46,21 +89,19 @@ bool GameLevel::CanMove(
 		}
 	}
 
-	// 땅인 경우 가능. 그외 다 불가능
+	//  타일 / 땅 밟기 가능
 	for (std::shared_ptr<Actor> actor : actorList)
 	{
 		if (actor->GetPosition() == newPosition)
 		{
-			if (actor->IsTypeOf<ActiveTile>())
+			if (actor->IsTypeOf<ActiveTile>() ||
+				actor->IsTypeOf<Ground>())
 			{
 				return true;
 			}
-			if (actor->IsTypeOf<Ground>())
-				return true;
 		}
 		
 	}
-
 	return false;
 }
 
@@ -86,25 +127,6 @@ bool GameLevel::isSamePosition(const Craft::Vector2& playerPosition,
 
 	}
 	return false;
-}
-
-
-void GameLevel::OnInitialized()
-{
-	Level::OnInitialized();
-
-	// Todo: 파일 읽어서 맵 로드
-	LoadMap("TileMap" + std::to_string(StageNum) + ".txt");
-}
-
-
-//Draw 이벤트 함수
-void GameLevel::Draw()
-{
-	Level::Draw();
-	std::wstring text = L"ArrowTile Count: " + std::to_wstring(remainingArrowCount);
-	Renderer::Get().Submit(text, Vector2(23, 4));
-	Renderer::Get().Submit(L"Stage" + std::to_wstring(StageNum), Vector2(23, 5));
 }
 
 
@@ -149,7 +171,8 @@ void GameLevel::LoadMap(const std::string& filename)
 		}
 		else if (sscanf_s(lineBuffer, "Stage %d", &count) == 1)
 		{
-			StageNum = count;
+			Game& game = dynamic_cast<Game&>(Engine::Get());
+			game.SetStageNum(count);
 		}
 	}
 

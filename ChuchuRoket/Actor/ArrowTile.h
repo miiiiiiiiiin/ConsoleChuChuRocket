@@ -34,7 +34,7 @@ private:
 
 private:
 	// 타일 방향 정보
-	TileDir tileDir = TileDir::Left;
+	TileDir tileDir = TileDir::Right;
 
 	// 이동 가능한지 확인
 	bool CanMove = true;

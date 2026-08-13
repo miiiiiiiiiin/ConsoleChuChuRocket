@@ -21,13 +21,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -97,6 +97,10 @@
     <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Actor\Goal.h" />
     <ClInclude Include="Actor\Ground.h" />
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Level\ClearLevel.h" />
+    <ClInclude Include="Level\MainLevel.h" />
+    <ClInclude Include="Level\MenuLevel.h" />
     <ClInclude Include="Actor\Mouse.h" />
     <ClInclude Include="Actor\TileDir.h" />
     <ClInclude Include="Actor\Wall.h" />
@@ -109,6 +113,10 @@
     <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Actor\Goal.cpp" />
     <ClCompile Include="Actor\Ground.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Level\ClearLevel.cpp" />
+    <ClCompile Include="Level\MainLevel.cpp" />
+    <ClCompile Include="Level\MenuLevel.cpp" />
     <ClCompile Include="Actor\Mouse.cpp" />
     <ClCompile Include="Actor\Wall.cpp" />
     <ClCompile Include="Level\GameLevel.cpp" />

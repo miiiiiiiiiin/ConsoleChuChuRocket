@@ -27,8 +27,13 @@ private:
 	// Dir: 
 	Craft::Vector2 MouseMoveDirChange();
 
+	// 골인지 확인하는 함수
+	bool isGoal(std::shared_ptr<GameLevel> level);
+
 	// 화살표 타일 방향 확인 함수
 	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
+
+	// 쥐 방향 세터
 	void SetDir(TileDir dir) { direction = dir; }
 private:
 	//현재 위치
@@ -47,7 +52,7 @@ private:
 	float moveSpeed = 3.0f;
 
 	//시작되었다면 Tick 실행
-	bool isStart = true;
+	bool isBreak = false;
 
 	Timer timer;
 };
