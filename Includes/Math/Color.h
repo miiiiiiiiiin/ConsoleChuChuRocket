@@ -16,6 +16,7 @@ namespace Craft
 		WHITE = RED | GREEN | BLUE,
 		BRIGHTWHITE = WHITE | FOREGROUND_INTENSITY,
 		CLASSICGREEN = 0x0A,
-		brightBlue = 46
+		brightBlue = 46,
+		SKY = 11
 	};
 }

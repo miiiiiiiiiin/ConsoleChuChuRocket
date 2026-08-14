@@ -7,7 +7,7 @@
 using namespace Craft;
 
 ArrowTile::ArrowTile(const Vector2& position)
-	: Actor(L"⮞", position, Color::YELLOW)
+	: Actor(L"⮞", position, Color::SKY)
 	, startPosition(position)
 {
 	sortingOrder = 5;
