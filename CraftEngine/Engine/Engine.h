@@ -2,7 +2,10 @@
 #include<memory> // 스마트 포인터 사용
 #include<Core/Core.h>
 #include<Render/Renderer.h>
+#include <string>
 
+
+class Sound;
 namespace Craft
 {
 	//전방 선언
@@ -35,6 +38,11 @@ namespace Craft
 		void Run();
 		//엔진종료함수
 		void Quit();
+		
+		// 사운드 재생 함수(사운드 시스템 래퍼 함수
+		void PlayOnShot(const std::string& filename);
+		void PlayBackgroundMusic(const std::string& filename);
+		void StopBackgroundMusic();
 
 		//레벨 추가 요청 함수
 		// 1. std::is_base_of 하는일이 무엇인지
@@ -110,6 +118,9 @@ namespace Craft
 
 		// 콜리전 시스템
 		std::unique_ptr<CollisionSystem> collisionSystem;
+
+		// 사운드 시스템 객체
+		std::unique_ptr<Sound> sound;
 	};
 }
 

@@ -1,12 +1,13 @@
-﻿#include "Engine/Engine.h"
-#include <Level/Level.h>
+﻿#include <Level/Level.h>
 #include<Input/Input.h>
 #include<Render/Renderer.h>
 #include <Physics/CollisionSystem.h>
+#include <SoundSystem/SoundSystem/Sound.h>
 
 #include<iostream>
 #include<Windows.h>
 #include<cassert>
+#include "Engine.h"
 //#include<chrono> 시간 계산
 
 namespace Craft
@@ -33,6 +34,9 @@ namespace Craft
 		
 		// 콜리전 시스템 개체 생성
 		collisionSystem = std::make_unique<CollisionSystem>();
+
+		// 사운드 시스템 객체 생성
+		sound = std::make_unique<Sound>();
 
 	}
 	Engine::~Engine()
@@ -146,6 +150,29 @@ namespace Craft
 		//엔진 종료 플래그 설정
 		isQuit = true;
 	}
+
+	void Engine::PlayOnShot(const std::string& filename)
+	{
+		if (!sound) return;
+
+		// 사운드 시스템 함수 호출
+		sound->PlayOneShot(std::string("../Assets/Sound/") + filename);
+	}
+	void Engine::PlayBackgroundMusic(const std::string& filename)
+	{
+		if (!sound) return;
+
+		// 사운드 시스템 함수 호출
+		sound->PlayBackgroundMusic(std::string("../Assets/Sound/") + filename);
+	}
+	void Engine::StopBackgroundMusic()
+	{
+		if (!sound) return;
+
+		// 사운드 시스템 함수 호출
+		sound->StopBackgroundMusic();
+	}
+
 	Engine& Engine::Get()
 	{
 		//검증 - 어서트(assert)

@@ -53,6 +53,7 @@ void Cat::Tick(float deltaTime)
 		// 2. 장애물(적)인지 확인
 		if (isBump<Enemy>(level, game))
 		{
+
 			Destroy();
 		}
 		// 3. 쥐인지 확인
@@ -129,6 +130,8 @@ bool Cat::isBump(std::shared_ptr<GameLevel> level, Game& game)
 	auto tiledir = level->FindActorAt<T>(CatPos);
 	if (tiledir)
 	{
+		// 사운드 효과 재생
+		Engine::Get().PlayOnShot("Explosion.wav");
 		return true;
 	}
 	return false;

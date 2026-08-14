@@ -15,6 +15,7 @@ void MainLevel::Tick(float deltaTime)
 	if (Input::Get().GetKeyDown(VK_RETURN))
 	{
 		Game& game = dynamic_cast<Game&>(Engine::Get());
+
 		game.GoToGameLevel();
 	}
 }
@@ -23,13 +24,13 @@ void MainLevel::Draw()
 {
 	std::string TitleText = "mainAsciiART.txt";
 	std::string PressText = "PressEnterArt.txt";
-	TitleTextLoad(TitleText, Vector2(3, 1));
-	TitleTextLoad(PressText, Vector2(6, 8));
+	TitleTextLoad(TitleText, Vector2(3, 1), Color::BLUE);
+	TitleTextLoad(PressText, Vector2(6, 8), Color::PURPLE);
 
 
 }
 
-void MainLevel::TitleTextLoad(std::string fileName, Craft::Vector2 position)
+void MainLevel::TitleTextLoad(std::string fileName, Craft::Vector2 position, Color color)
 {	
 	char* Titlearr[300][300] = {};
 	//Renderer::Get().Submit(
@@ -75,7 +76,7 @@ void MainLevel::TitleTextLoad(std::string fileName, Craft::Vector2 position)
 				}
 			}
 
-			Renderer::Get().Submit(text, position);
+			Renderer::Get().Submit(text, position, color);
 			position.y++;
 			++index;
 			text.clear();

@@ -42,6 +42,8 @@ void Mouse::Tick(float deltaTime)
 		}
 		if (infiniteMouseTime.isTimeOut())
 		{
+			// 사운드 효과 재생
+			Engine::Get().PlayOnShot("Back.wav");
 			game.GoToGameLevel();
 			return;
 		}
@@ -56,6 +58,9 @@ void Mouse::Tick(float deltaTime)
 		//2. 적인지 확인
 		if (isEnemy(level))
 		{
+			
+			// 사운드 효과 재생
+			Engine::Get().PlayOnShot("Back.wav");
 			//isBreak = true;
 			game.GoToGameLevel();
 			return;
@@ -77,6 +82,8 @@ void Mouse::Tick(float deltaTime)
 				// Todo: isBreak로 게임오버 처리하기.여기서 겜오버 창을 띄우던지해야됨
 				// -> 다시 리셋하는걸로 함
 				//isBreak = true;
+				// 사운드 효과 재생
+				Engine::Get().PlayOnShot("Back.wav");
 				game.GoToGameLevel();
 				return;
 			}
@@ -157,7 +164,8 @@ void Mouse::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level)
 	if (tiledir != nullptr)
 	{
 		OutputDebugStringA("FOUND\n");
-
+		// 사운드 효과 재생
+		Engine::Get().PlayOnShot("PushTile.wav");
 		std::cout << "Mouse Pos: "
 			<< mousePos.x << ", "
 			<< mousePos.y << '\n';

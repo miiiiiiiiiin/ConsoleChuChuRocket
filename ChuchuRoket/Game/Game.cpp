@@ -28,6 +28,8 @@ void Game::MainToGame()
 
 void Game::GoToClearLevel()
 {
+	// 사운드 효과 재생
+	Engine::Get().PlayOnShot("pickupCoin.wav");
 	mainLevel = levelList[3];   // ClearLevel 인덱스
 	state = State::Clear;
 	timer.Reset();

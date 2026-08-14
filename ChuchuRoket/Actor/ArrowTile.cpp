@@ -107,6 +107,8 @@ void ArrowTile::Tick(float deltaTime)
 			{
 				// 1. 현재 위치 + 방향으로 "영구 타일" 확정 생성.
 				OutputDebugStringA("ActiveTile Spawned!\n");
+				// 사운드 효과 재생
+				Engine::Get().PlayOnShot("TileDown.wav");
 				level->SpawnActor<ActiveTile>(image, GetPosition(), tileDir);
 
 				// CanMove인지 아닌지 다시설정

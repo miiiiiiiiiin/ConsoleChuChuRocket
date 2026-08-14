@@ -24,6 +24,7 @@ void ClearLevel::Tick(float deltaTime)
 
 	if (game.GetisClear())
 	{
+
 		// 계싼 시작
 		game.SetTick(deltaTime);
 
