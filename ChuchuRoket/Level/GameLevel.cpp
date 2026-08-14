@@ -1,4 +1,5 @@
 ﻿#include "GameLevel.h"
+
 #include <Actor/Wall.h>
 #include <Actor/Goal.h>
 #include <Actor/Mouse.h>
@@ -6,9 +7,12 @@
 #include <Actor/Ground.h>
 #include <Actor/ArrowTile.h>
 #include <Actor/ActiveTile.h>
-#include <Render/Renderer.h>
+#include <Actor/Cat.h>
+
 #include <Game/Game.h>
 
+#include <Render/Renderer.h>
+#include <Input/Input.h>
 #include <cassert>
 #include <vector>
 
@@ -17,6 +21,7 @@ void GameLevel::OnInitialized()
 {
 	Level::OnInitialized();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
+	// Todo: 디버그 끝->눌러주세요
 	// 파일 읽어서 맵 로드
 	LoadMap("TileMap" + std::to_string(game.GetStageNum()) + ".txt");
 	//LoadMap("TileMap4.txt");
@@ -29,22 +34,33 @@ void GameLevel::Draw()
 {
 	Level::Draw();
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	std::wstring text = L"ArrowTile	Count: " + std::to_wstring(remainingArrowCount);
-	Renderer::Get().Submit(text, Vector2(23, 2));
-	Renderer::Get().Submit(L"Stage" + std::to_wstring(game.GetStageNum()), Vector2(23, 3));
-	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(23, 4));
-	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(23, 5));
-	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(23, 6));
-	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(23, 7));
+	Renderer::Get().Submit(L"Stage " + std::to_wstring(game.GetStageNum()), Vector2(TextPosition.x + 2, 1));
+	std::wstring text = L"남은 방향타일: " + std::to_wstring(remainingArrowCount);
+	Renderer::Get().Submit(text, Vector2(TextPosition.x + 2, 3));
+	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(TextPosition.x + 2, 5));
+	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(TextPosition.x + 2, 6));
+	Renderer::Get().Submit(L"Shift + 방향키: 빠르게 타일 이동", Vector2(TextPosition.x + 2, 7));
+	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(TextPosition.x + 2, 8));
+	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(TextPosition.x + 2, 9));
 }
 
 void GameLevel::Tick(float deltaTime)
 {
+	Game& game = dynamic_cast<Game&>(Engine::Get());
+	// 종료
+	if (Input::Get().GetKeyDown(VK_ESCAPE))
+	{
+		Engine::Get().Quit();
+	}
+	// 게임 리셋(현재 스테이지 리셋)
+	if (Input::Get().GetKeyDown('R'))
+	{
+		game.GoToGameLevel();
+	}
+	// 클리어 Level로 이동
 	super::Tick(deltaTime);
 	if (isGameClear)
 	{
-		Game& game = dynamic_cast<Game&>(Engine::Get());
-
 		// 스테이지넘버 숫자 올리기
 		game.StageNumCounting();
 
@@ -72,27 +88,6 @@ bool GameLevel::CanMove(
 	// 이동 방향 구하기 -> 옆으로 이동하는 위치 구하기
 	Vector2 dir = nextPosition - playerPosition;
 	Vector2 newPosition = playerPosition + dir;
-
-	// 액터리스트에서 ActiveTile, Mouse인 액터만 모으기
-	std::vector<std::shared_ptr<Actor>> tileMouseList;
-	for (std::shared_ptr<Actor> actor : actorList)
-	{
-		//if (actor->IsTypeOf<ActiveTile>()) {
-		//	tileMouseList.emplace_back(actor);
-		//}
-		if (actor->IsTypeOf<Mouse>()) {
-			tileMouseList.emplace_back(actor);
-		}
-	}
-
-	// 다음 위치가 타일리스트인 경우 막기
-	for (std::shared_ptr<Actor> actor : tileMouseList)
-	{
-		if (actor->GetPosition() == newPosition)
-		{
-			return false;
-		}
-	}
 
 	//  타일 / 땅 밟기 가능
 	for (std::shared_ptr<Actor> actor : actorList)
@@ -203,8 +198,8 @@ void GameLevel::LoadMap(const std::string& filename)
 			SpawnActor<Ground>(position);
 			break;
 		case 'P':
-			SpawnActor<Ground>(position);
 			SpawnActor<Mouse>(position);
+			SpawnActor<Ground>(position);
 			break;
 		case 'R':
 			SpawnActor<Ground>(position);
@@ -214,21 +209,20 @@ void GameLevel::LoadMap(const std::string& filename)
 			SpawnActor<Goal>(position);
 			targetScore++;
 			break;
-		case 'M':
-			//SpawnActor<Enemy>(position);
+		case 'C':
+			SpawnActor<Cat>(position);
 			SpawnActor<Ground>(position);
-			EnemyList.emplace_back(position);
-			targetScore++;
+			break;
+		case 'M':
+			SpawnActor<Ground>(position);
+			SpawnActor<Enemy>(position);
+			
 			break;
 		}
 
 		++position.x;
 	}
-
-	if (!EnemyList.empty())
-	{
-		SpawnActor<Enemy>(EnemyList);   // 모은 경로 전체를 몬스터 1마리에게 통째로 전달
-	}
+	TextPosition = position;
 
 	delete[] buffer;
 	buffer = nullptr;

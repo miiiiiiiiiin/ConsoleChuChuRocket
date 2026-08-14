@@ -20,7 +20,7 @@ Mouse::Mouse(const Craft::Vector2& position)
 	timer(0.1f), 
 	infiniteMouseTime(20.0f)
 {
-	sortingOrder = 5;
+	sortingOrder = 3;
 	//timer.SetTargetTime(0.5f);
 }
 
@@ -167,6 +167,23 @@ void Mouse::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level)
 			<< tiledir->GetPosition().y << '\n';
 
 		direction = tiledir->GetDir();
+		ChageArrowImage();
+	}
+
+}
+
+void Mouse::ChageArrowImage()
+{
+	switch (direction)
+	{
+	case TileDir::Right: image = L"⯈";
+		break;
+	case TileDir::Left: image = L"⯇";
+		break;
+	case TileDir::Up: image = L"⯅";
+		break;
+	case TileDir::Down: image = L"⯆";
+		break;
 	}
 }
 

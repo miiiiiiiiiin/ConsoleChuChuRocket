@@ -36,6 +36,9 @@ private:
 	// 화살표 타일 방향 확인 함수
 	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
 
+	//  타일에 맞는 방향이미지 설정하기
+	void ChageArrowImage();
+
 	// 쥐 방향 세터
 	void SetDir(TileDir dir) { direction = dir; }
 private:
@@ -59,5 +62,6 @@ private:
 
 	Timer timer;
 	Timer infiniteMouseTime;
+
 };
 

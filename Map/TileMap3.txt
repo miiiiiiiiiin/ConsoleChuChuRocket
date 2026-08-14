@@ -1,5 +1,5 @@
 Stage 3
-Arrow_Count: 4
+Arrow_Count: 2
 ############
 #P..R......#
 #.#######.##

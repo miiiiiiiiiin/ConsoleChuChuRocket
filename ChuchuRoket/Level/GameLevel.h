@@ -15,7 +15,6 @@ public:
 	bool isSamePosition(const Craft::Vector2& playerPosition,
 		const Craft::Vector2& nextPosition);
 
-
 	// ArrowCOunt 게터
 	// 외부(ArrowTile 등)에서 부를 수 있는 public 인터페이스.
 	void DecreaseArrowCount() { remainingArrowCount--; }
@@ -55,7 +54,7 @@ private:
 	// 남은 화살표 개수
 	int remainingArrowCount = 0;
 
-	// 몬스터 경로 넣는 리스트
-	std::vector<Craft::Vector2> EnemyList;
+	// 텍스트 위치 설정
+	Craft::Vector2 TextPosition;
 };
 

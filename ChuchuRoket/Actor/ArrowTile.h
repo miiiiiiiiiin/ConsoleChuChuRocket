@@ -2,7 +2,7 @@
 #include <Actor/Actor.h>
 #include <Level/GameLevel.h>
 #include "TileDir.h"
-
+#include <Input/Input.h>
 class ArrowTile : public Craft::Actor
 {
 	TYPE_DECLARATIONS(ArrowTile, Actor)
@@ -28,6 +28,9 @@ private:
 
 	// 방향타일 횟수 검사해서 다했느면 isGame= true로 바꾸는함수
 	bool canStart(std::shared_ptr<GameLevel> gamelevel);
+
+	// 방향키 대시 구분하도록 방향 세팅함
+	bool GetMoveKey(int keyCode);
 
 	// Mouse에서 쓸 Getter
 	bool GetCanMove() { return CanMove; }

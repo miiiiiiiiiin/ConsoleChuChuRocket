@@ -9,10 +9,7 @@ class Enemy : public Craft::Actor
 	TYPE_DECLARATIONS(Enemy, Actor)
 
 public:
-	Enemy(const std::vector<Craft::Vector2>& EnemyList);
-
-	// 조건에 맞게 몬스터 움직임 인덱스 바꾸는 함수
-	int setEnemyCount();
+	Enemy(const Craft::Vector2& position);
 
 	virtual void Tick(float deltaTime) override;
 private:
@@ -21,8 +18,11 @@ private:
 
 	Timer timer;
 	int EnemyCount = 0;
-	const std::vector<Craft::Vector2> EnemyVector;
 
+	// 장애물 움직임 상태변수
 	bool isMinus = false;
+
+	// 장애물 이미지 상태변수
+	bool isReturn = false;
 };
 

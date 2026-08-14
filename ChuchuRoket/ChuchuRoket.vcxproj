@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="Actor\ActiveTile.h" />
     <ClInclude Include="Actor\ArrowTile.h" />
+    <ClInclude Include="Actor\Cat.h" />
     <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Actor\Goal.h" />
     <ClInclude Include="Actor\Ground.h" />
@@ -110,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="Actor\ActiveTile.cpp" />
     <ClCompile Include="Actor\ArrowTile.cpp" />
+    <ClCompile Include="Actor\Cat.cpp" />
     <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Actor\Goal.cpp" />
     <ClCompile Include="Actor\Ground.cpp" />

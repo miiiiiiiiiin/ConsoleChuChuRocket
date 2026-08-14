@@ -10,7 +10,7 @@ ArrowTile::ArrowTile(const Vector2& position)
 	: Actor(L"⮞", position, Color::YELLOW)
 	, startPosition(position)
 {
-	sortingOrder = 3;
+	sortingOrder = 5;
 }
 
 Vector2 ArrowTile::ArrowMove(
@@ -47,6 +47,17 @@ bool ArrowTile::canStart(std::shared_ptr<GameLevel> gamelevel)
 	return true;
 }
 
+bool ArrowTile::GetMoveKey(int keyCode)
+{
+	// 시프트 눌렷으면 대시
+	if (Input::Get().GetKey(VK_SHIFT))
+	{
+		return Input::Get().GetKey(keyCode);
+	}
+	// 안눌렷으면  GetKeyDown
+	return Input::Get().GetKeyDown(keyCode);
+}
+
 void ArrowTile::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
@@ -70,21 +81,21 @@ void ArrowTile::Tick(float deltaTime)
 			ArrowSelect(L"⮞", TileDir::Right);
 
 		// 방향키: 이동
-		if (Input::Get().GetKeyDown(VK_UP))
-			SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), gamelevel)); 
+		// shift 눌렀으면 GetKEy, 안눌럿으면 GetKeyDOwn
+			if (GetMoveKey(VK_UP))
+				SetPosition(ArrowMove(Vector2(0, -1), GetPosition(), gamelevel));
 
-		if (Input::Get().GetKeyDown(VK_DOWN))
-			SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), gamelevel));
+			if (GetMoveKey(VK_DOWN))
+				SetPosition(ArrowMove(Vector2(0, 1), GetPosition(), gamelevel));
 
-		if (Input::Get().GetKeyDown(VK_LEFT))
-			SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), gamelevel));
+			if (GetMoveKey(VK_LEFT))
+				SetPosition(ArrowMove(Vector2(-1, 0), GetPosition(), gamelevel));
 
-		if (Input::Get().GetKeyDown(VK_RIGHT))
-			SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), gamelevel));
+			if (GetMoveKey(VK_RIGHT))
+				SetPosition(ArrowMove(Vector2(1, 0), GetPosition(), gamelevel));
+		
 
-
-
-		// r: 확정 (초기 위치로 리셋, 방향키 다썻으면 destroy)
+		// Enter: 확정 (초기 위치로 리셋, 방향키 다썻으면 destroy)
 		if (Input::Get().GetKeyDown(VK_RETURN))
 		{
 			// 여기서 정지.

@@ -13,7 +13,7 @@ Game::Game() : timer(1.5f)
 	levelList.emplace_back(std::make_shared<ClearLevel>());
 
 	// 시작 상태 설정
-	state = State::Game;
+	state = State::Main;
 
 	// 게임 시작 시 활성화할 레벨 설정 
 	// Todo: 메인화면 제작 후 메인화면으로 바꾸기
