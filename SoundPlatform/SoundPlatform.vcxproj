@@ -71,8 +71,8 @@
       <Command>xcopy *.h ..\Includes\SoundSystem\ /e /y /i</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy $(OutDir)\SoundSystem.lib ..Lib\SoundSystem\$(Configuration)\ /e /y /i
-xcopy $(OutDir)\SoundSystem.dll ..Lib\SoundSystem\$(Configuration)\ /e /y /i</Command>
+      <Command>xcopy $(OutDir)\SoundSystem.lib ..\Lib\SoundSystem\$(Configuration)\ /e /y /i
+xcopy $(OutDir)\SoundSystem.dll ..\Lib\SoundSystem\$(Configuration)\ /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -96,8 +96,8 @@ xcopy $(OutDir)\SoundSystem.dll ..Lib\SoundSystem\$(Configuration)\ /e /y /i</Co
       <Command>xcopy *.h ..\Includes\SoundSystem\ /e /y /i</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy $(OutDir)\SoundSystem.lib ..Lib\SoundSystem\$(Configuration)\ /e /y /i
-xcopy $(OutDir)\SoundSystem.dll ..Lib\SoundSystem\$(Configuration)\ /e /y /i</Command>
+      <Command>xcopy $(OutDir)\SoundSystem.lib ..\Lib\SoundSystem\$(Configuration)\ /e /y /i
+xcopy $(OutDir)\SoundSystem.dll ..\Lib\SoundSystem\$(Configuration)\ /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

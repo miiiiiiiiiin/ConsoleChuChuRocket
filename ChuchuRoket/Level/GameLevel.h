@@ -56,5 +56,9 @@ private:
 
 	// 텍스트 위치 설정
 	Craft::Vector2 TextPosition;
+
+	// 쥐 총 카운트
+	int MouseCount = 0;
+	
 };
 

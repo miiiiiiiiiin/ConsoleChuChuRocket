@@ -33,15 +33,33 @@ void GameLevel::OnInitialized()
 void GameLevel::Draw()
 {
 	Level::Draw();
+	if (isCanMove)
+	{
+		Renderer::Get().Submit(L"⟬ 화살표를 움직여 쥐를 도착지까지 유도하세요! ⟭", Vector2(3, 1), Color::YELLOW);
+	}
+	else
+	{
+		Renderer::Get().Submit(L"⟬ 쥐가 움직입니다 ⟭", Vector2(6, 1), Color::SKY);
+	}
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	Renderer::Get().Submit(L"Stage " + std::to_wstring(game.GetStageNum()), Vector2(TextPosition.x + 2, 1));
+	Renderer::Get().Submit(L"Stage " + std::to_wstring(game.GetStageNum()), Vector2(TextPosition.x + 2, 3));
 	std::wstring text = L"남은 방향타일: " + std::to_wstring(remainingArrowCount);
-	Renderer::Get().Submit(text, Vector2(TextPosition.x + 2, 3));
-	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(TextPosition.x + 2, 5));
-	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(TextPosition.x + 2, 6));
-	Renderer::Get().Submit(L"Shift + 방향키: 빠르게 타일 이동", Vector2(TextPosition.x + 2, 7));
-	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(TextPosition.x + 2, 8));
-	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(TextPosition.x + 2, 9));
+	Renderer::Get().Submit(text, Vector2(TextPosition.x + 2, 5), Color::YELLOW);
+	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(TextPosition.x + 2, 6));
+	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(TextPosition.x + 2, 8));
+	Renderer::Get().Submit(L"Shift + 방향키: 빠르게 타일 이동", Vector2(TextPosition.x + 2, 9));
+	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(TextPosition.x + 2, 10));
+	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(TextPosition.x + 2, 11));
+
+	int legendY = 15;
+	Renderer::Get().Submit(L"[ 기호 안내 ]", Vector2(7, legendY), Color::BRIGHTWHITE);
+	Renderer::Get().Submit(L"⯈ 쥐 - 화살표로 도착지까지 유도", Vector2(5, legendY + 1), Color::BRIGHTWHITE);
+	Renderer::Get().Submit(L"⯇ 고양이 - 닿으면 게임 오버! 쥐와 이동 경로가 같음.", Vector2(5, legendY + 2), Color::RED);
+	Renderer::Get().Submit(L"⯍ 장애물 - 닿으면 게임 오버!", Vector2(5, legendY + 3), Color::GREEN);
+	Renderer::Get().Submit(L"▣ 도착지 - 쥐가 도착해야 할 목표", Vector2(5, legendY + 4), Color::BRIGHTPURPLE);
+	Renderer::Get().Submit(L"⮞ 방향 타일 - 방향 조절 가능", Vector2(5, legendY + 5), Color::SKY);
+	Renderer::Get().Submit(L"⮞ 방향 타일(확정) - 쥐 방향을 바꿈", Vector2(5, legendY + 6), Color::YELLOW);
+	Renderer::Get().Submit(L"█ 벽 - 지나갈 수 없음", Vector2(5, legendY + 7), Color::WHITE);
 }
 
 void GameLevel::Tick(float deltaTime)
@@ -177,7 +195,7 @@ void GameLevel::LoadMap(const std::string& filename)
 	}
 
 	// ---- 여기서부터 실제 맵 파싱 (index는 헤더 2줄을 지나온 위치) ----
-	Vector2 position;
+	Vector2 position = Vector2(5, 3);
 	while (index < (int)readSize)
 	{
 		char mapCharacter = buffer[index++];
@@ -185,7 +203,7 @@ void GameLevel::LoadMap(const std::string& filename)
 		if (mapCharacter == '\n')
 		{
 			++position.y;
-			position.x = 0;
+			position.x = 5;
 			continue;
 		}
 
@@ -200,6 +218,7 @@ void GameLevel::LoadMap(const std::string& filename)
 		case 'P':
 			SpawnActor<Mouse>(position);
 			SpawnActor<Ground>(position);
+			MouseCount++;
 			break;
 		case 'R':
 			SpawnActor<Ground>(position);
