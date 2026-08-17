@@ -101,24 +101,22 @@ void ArrowTile::Tick(float deltaTime)
 			// 여기서 정지.
 			//CanMove = false;
 			//color = Color::PURPLE;
-			std::shared_ptr<Level> level = GetOwner();
 
-			if (level)
+			if (gamelevel)
 			{
-				// 1. 현재 위치 + 방향으로 "영구 타일" 확정 생성.
-				OutputDebugStringA("ActiveTile Spawned!\n");
+				// 1. 현재 위치 + 방향으로 영구 타일 확정 생성
 				// 사운드 효과 재생
 				Engine::Get().PlayOnShot("TileDown.wav");
-				level->SpawnActor<ActiveTile>(image, GetPosition(), tileDir);
+				gamelevel->SpawnActor<ActiveTile>(image, GetPosition(), tileDir);
 
-				// CanMove인지 아닌지 다시설정
+				// 방향 타일 다 썼는지 확인
 				gamelevel->SetisCanMove(canStart(gamelevel));
 
-				// 다음 화살표를 배치하기 위한 새 커서 스폰.
-				//    초기 위치(시작 지점)에서 다시 시작.
+				// 다음 화살표를 배치하기 위한 새 커서 스폰
+				// 초기 위치(시작 지점)에서 다시 시작
 				if (gamelevel->GetisCanMove()) {
 					
-					level->SpawnActor<ArrowTile>(startPosition);
+					gamelevel->SpawnActor<ArrowTile>(startPosition);
 				}
 			}
 			Destroy();

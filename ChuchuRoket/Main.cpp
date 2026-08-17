@@ -7,6 +7,8 @@ int main()
 	//Craft::Engine engine;
 	//engine.AddNewLevel<GameLevel>();
 	//engine.Run();
+	SetConsoleTitleA("CPP Rocket");
+
 	Game game;
 	game.Run();
 }

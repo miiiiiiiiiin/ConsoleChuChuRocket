@@ -19,8 +19,7 @@ Cat::Cat(const Craft::Vector2& position)
 	: Actor(L"⯇", position, Color::RED),
 	xPosition(GetPosition().x),
 	yPosition(GetPosition().y),
-	timer(0.3f),
-	infiniteCatTime(20.0f)
+	timer(0.2f)
 {
 	sortingOrder = 5;
 	//timer.SetTargetTime(0.5f);
@@ -35,16 +34,10 @@ void Cat::Tick(float deltaTime)
 	{
 		//CatMove(deltaTime);
 		// 쥐 움직이기 시작
-		infiniteCatTime.Tick(deltaTime);
 		// 0. 타이머 체크(아직 이동 타이밍 아니면 리턴)
 		timer.Tick(deltaTime);
 		if (!timer.isTimeOut())
 		{
-			return;
-		}
-		if (infiniteCatTime.isTimeOut())
-		{
-			game.GoToGameLevel();
 			return;
 		}
 		//1. 골인지 확인: 맞다면 게임오버
@@ -53,32 +46,25 @@ void Cat::Tick(float deltaTime)
 		// 2. 장애물(적)인지 확인
 		if (isBump<Enemy>(level, game))
 		{
-
 			Destroy();
+			return;
 		}
 		// 3. 쥐인지 확인
 		if(isBump<Mouse>(level, game)) game.GoToGameLevel();
 
 		Vector2 newPosition = GetPosition() + CatMoveDirChange();
-		//3. 화살표 타일 확인 → 방향 갱신
-		ArrowTileUpdateDirectionFromTile(level);
 
-		//4. CanMove(현재방향) 확인
-		// 다음위치 검사햇을때 이동불가면 90도 회전
-		if (!level->CanMove(GetPosition(), newPosition)) {
-			// 회전
+		// 4. 벽 부딪혔다면 시계방향으로 방향 갱신
+		while (!level->CanMove(GetPosition(), newPosition))
+		{
 			CatPrsp();
 			newPosition = GetPosition() + CatMoveDirChange();
-			// 방향 바꾼 후 다음 위치도 이동 가능한지 확인. 아니면 겜오버
-			if (!level->CanMove(GetPosition(), newPosition))
-			{
-				// Todo: isBreak로 게임오버 처리하기.여기서 겜오버 창을 띄우던지해야됨
-				// -> 다시 리셋하는걸로 함
-				//isBreak = true;
-				//game.GoToGameLevel();
-				return;
-			}
+
 		}
+		//5. 화살표 타일 확인 → 방향 갱신
+		ArrowTileUpdateDirectionFromTile(level, newPosition);
+
+		// 6. 이동 확정
 		SetPosition(newPosition);
 		timer.Reset();
 	}
@@ -126,35 +112,26 @@ template<typename T>
 bool Cat::isBump(std::shared_ptr<GameLevel> level, Game& game)
 {
 	auto CatPos = GetPosition() + CatMoveDirChange();
-	// 여기서 AtPosition인가그걸로 쥐랑 같은위치인지 확인하고 맞다면 겜 클리어 ㄱㄱ
+	// 여기서 FindActorAt로 충돌확인
 	auto tiledir = level->FindActorAt<T>(CatPos);
 	if (tiledir)
 	{
 		// 사운드 효과 재생
-		Engine::Get().PlayOnShot("Explosion.wav");
+		Engine::Get().PlayOnShot("hitHurt.wav");
 		return true;
 	}
 	return false;
 }
 
-void Cat::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level)
+void Cat::ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level, Vector2& newPosition)
 {
-	auto CatPos = GetPosition() + CatMoveDirChange();
+	//auto CatPos = GetPosition() + CatMoveDirChange();
 	// ActiveTile이 맞다면 그 객체 포인터를 리턴한다. 
-	auto tiledir = level->FindActorAt<ActiveTile>(CatPos);
+	auto tiledir = level->FindActorAt<ActiveTile>(newPosition);
 
 	if (tiledir != nullptr)
 	{
-		OutputDebugStringA("FOUND\n");
-
-		std::cout << "Cat Pos: "
-			<< CatPos.x << ", "
-			<< CatPos.y << '\n';
-
-		std::cout << "Tile Pos: "
-			<< tiledir->GetPosition().x << ", "
-			<< tiledir->GetPosition().y << '\n';
-
 		direction = tiledir->GetDir();
+
 	}
 }

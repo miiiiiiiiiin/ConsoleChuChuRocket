@@ -42,41 +42,60 @@ void GameLevel::Draw()
 		Renderer::Get().Submit(L"⟬ 쥐가 움직입니다 ⟭", Vector2(6, 1), Color::SKY);
 	}
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	Renderer::Get().Submit(L"Stage " + std::to_wstring(game.GetStageNum()), Vector2(TextPosition.x + 2, 3));
+	int textY = 3;
+	Renderer::Get().Submit(L"Stage " + std::to_wstring(game.GetStageNum()), Vector2(TextPosition.x + 2, textY));
 	std::wstring text = L"남은 방향타일: " + std::to_wstring(remainingArrowCount);
-	Renderer::Get().Submit(text, Vector2(TextPosition.x + 2, 5), Color::YELLOW);
-	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(TextPosition.x + 2, 6));
-	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(TextPosition.x + 2, 8));
-	Renderer::Get().Submit(L"Shift + 방향키: 빠르게 타일 이동", Vector2(TextPosition.x + 2, 9));
-	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(TextPosition.x + 2, 10));
-	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(TextPosition.x + 2, 11));
+	Renderer::Get().Submit(text, Vector2(TextPosition.x + 2, textY + 2), Color::YELLOW);
+	Renderer::Get().Submit(L"쥐 개수: " + std::to_wstring(numberOfMouse), Vector2(TextPosition.x + 2, textY+ 3), Color::YELLOW);
+	Renderer::Get().Submit(L"남은 시간: " + std::to_wstring(timer.GetTargetTime() - timer.GetElapsedTime()), Vector2(TextPosition.x + 2, textY+ 4), Color::YELLOW);
+	Renderer::Get().Submit(L"쥐는 벽을 만나면 시계 방향으로 90도 회전합니다", Vector2(TextPosition.x + 2, textY+ 6));
+	Renderer::Get().Submit(L"방향키: 타일 이동", Vector2(TextPosition.x + 2, textY+ 7));
+	Renderer::Get().Submit(L"Shift + 방향키: 빠르게 타일 이동", Vector2(TextPosition.x + 2, textY+ 8));
+	Renderer::Get().Submit(L"WASD: 타일 방향 바꾸기", Vector2(TextPosition.x + 2, textY+ 9));
+	Renderer::Get().Submit(L"Enter: 타일 확정", Vector2(TextPosition.x + 2, textY+ 10));
 
 	int legendY = 15;
-	Renderer::Get().Submit(L"[ 기호 안내 ]", Vector2(7, legendY), Color::BRIGHTWHITE);
-	Renderer::Get().Submit(L"⯈ 쥐 - 화살표로 도착지까지 유도", Vector2(5, legendY + 1), Color::BRIGHTWHITE);
-	Renderer::Get().Submit(L"⯇ 고양이 - 닿으면 게임 오버! 쥐와 이동 경로가 같음.", Vector2(5, legendY + 2), Color::RED);
-	Renderer::Get().Submit(L"⯍ 장애물 - 닿으면 게임 오버!", Vector2(5, legendY + 3), Color::GREEN);
-	Renderer::Get().Submit(L"▣ 도착지 - 쥐가 도착해야 할 목표", Vector2(5, legendY + 4), Color::BRIGHTPURPLE);
-	Renderer::Get().Submit(L"⮞ 방향 타일 - 방향 조절 가능", Vector2(5, legendY + 5), Color::SKY);
-	Renderer::Get().Submit(L"⮞ 방향 타일(확정) - 쥐 방향을 바꿈", Vector2(5, legendY + 6), Color::YELLOW);
-	Renderer::Get().Submit(L"█ 벽 - 지나갈 수 없음", Vector2(5, legendY + 7), Color::WHITE);
+	Renderer::Get().Submit(L"[ 기호 안내 ]", Vector2(TextPosition.x + 2, legendY), Color::BRIGHTWHITE);
+	Renderer::Get().Submit(L"⯈ 쥐 - 화살표로 도착지까지 유도", Vector2(TextPosition.x + 2, legendY + 1), Color::BRIGHTWHITE);
+	Renderer::Get().Submit(L"⯇ 고양이 - 닿으면 게임 오버! 쥐와 이동 경로가 같음.", Vector2(TextPosition.x + 2, legendY + 2), Color::RED);
+	Renderer::Get().Submit(L"⯍ 장애물 - 닿으면 게임 오버!", Vector2(TextPosition.x + 2, legendY + 3), Color::GREEN);
+	Renderer::Get().Submit(L"▣ 도착지 - 쥐가 도착해야 할 목표", Vector2(TextPosition.x + 2, legendY + 4), Color::BRIGHTPURPLE);
+	Renderer::Get().Submit(L"⮞ 방향 타일 - 방향 조절 가능", Vector2(TextPosition.x + 2, legendY + 5), Color::SKY);
+	Renderer::Get().Submit(L"⮞ 방향 타일(확정) - 쥐 방향을 바꿈", Vector2(TextPosition.x + 2, legendY + 6), Color::YELLOW);
+	Renderer::Get().Submit(L"█ 벽 - 지나갈 수 없음", Vector2(TextPosition.x + 2, legendY + 7), Color::WHITE);
 }
 
 void GameLevel::Tick(float deltaTime)
-{
+{	
+	super::Tick(deltaTime);
+
 	Game& game = dynamic_cast<Game&>(Engine::Get());
-	// 종료
+	// esc: 종료
 	if (Input::Get().GetKeyDown(VK_ESCAPE))
 	{
 		Engine::Get().Quit();
 	}
-	// 게임 리셋(현재 스테이지 리셋)
+
+	// R: 게임 리셋(현재 스테이지 리셋)
 	if (Input::Get().GetKeyDown('R'))
 	{
 		game.GoToGameLevel();
 	}
+
+	if (!isCanMove)
+	{
+		timer.Tick(deltaTime);
+		if (timer.isTimeOut())
+		{
+			Engine::Get().PlayOnShot("Back.wav");
+			game.GoToGameLevel();
+		}
+
+	}
+	// 타임 아웃
+
 	// 클리어 Level로 이동
-	super::Tick(deltaTime);
+	//  골 도착 앤나 쥐들 다 도착햇는지 확인
 	if (isGameClear)
 	{
 		// 스테이지넘버 숫자 올리기
@@ -99,10 +118,10 @@ bool GameLevel::CanMove(
 	const Craft::Vector2& nextPosition)
 {
 	// 게임 클리어인 경우 처리 안함
-	if (isGameClear)
-	{
-		return false;
-	}
+	//if (isGameClear)
+	//{
+	//	return false;
+	//}
 	// 이동 방향 구하기 -> 옆으로 이동하는 위치 구하기
 	Vector2 dir = nextPosition - playerPosition;
 	Vector2 newPosition = playerPosition + dir;
@@ -218,7 +237,7 @@ void GameLevel::LoadMap(const std::string& filename)
 		case 'P':
 			SpawnActor<Mouse>(position);
 			SpawnActor<Ground>(position);
-			MouseCount++;
+			numberOfMouse++;
 			break;
 		case 'R':
 			SpawnActor<Ground>(position);
@@ -226,7 +245,6 @@ void GameLevel::LoadMap(const std::string& filename)
 			break;
 		case 'G':
 			SpawnActor<Goal>(position);
-			targetScore++;
 			break;
 		case 'C':
 			SpawnActor<Cat>(position);

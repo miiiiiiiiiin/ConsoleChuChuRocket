@@ -45,6 +45,9 @@ private:
 	//현재 위치
 	Craft::Vector2 position;
 
+	//
+	//Craft::Vector2 newPosition;
+
 	// 쥐가 바라보는 방향
 	TileDir direction = TileDir::Right;
 
@@ -61,7 +64,6 @@ private:
 	bool isBreak = false;
 
 	Timer timer;
-	Timer infiniteMouseTime;
 
 };
 

@@ -17,11 +17,9 @@ Mouse::Mouse(const Craft::Vector2& position)
 	: Actor(L"⯈", position, Color::BRIGHTWHITE),
 	xPosition(GetPosition().x),
 	yPosition(GetPosition().y), 
-	timer(0.1f), 
-	infiniteMouseTime(20.0f)
+	timer(0.1f)
 {
 	sortingOrder = 3;
-	//timer.SetTargetTime(0.5f);
 }
 
 void Mouse::Tick(float deltaTime)
@@ -31,27 +29,28 @@ void Mouse::Tick(float deltaTime)
 	std::shared_ptr<GameLevel> level = Cast<GameLevel>(GetOwner());
 	if (!level->GetisCanMove() && !isBreak)
 	{
-		//MouseMove(deltaTime);
 		// 쥐 움직이기 시작
-		infiniteMouseTime.Tick(deltaTime);
 		// 0. 타이머 체크(아직 이동 타이밍 아니면 리턴)
 		timer.Tick(deltaTime);
 		if (!timer.isTimeOut())
 		{
 			return;
 		}
-		if (infiniteMouseTime.isTimeOut())
-		{
-			// 사운드 효과 재생
-			Engine::Get().PlayOnShot("Back.wav");
-			game.GoToGameLevel();
-			return;
-		}
+
 		//1. 골인지 확인: 맞다면 리턴
 		if (isGoal(level))
 		{
-			// 화면 바꾸기 Clear! 화면으로....
-			level->SetisClear(true);
+			level->SetMouseCount();
+			//Engine::Get().PlayOnShot("Retro_Laser_Shot.wav");
+			Engine::Get().PlayOnShot("pickupCoin.wav");
+
+
+			if (level->GetMouseCount() == level->GetNumberOfMouse())
+			{
+				// 화면 바꾸기 Clear! 화면으로....
+				level->SetisClear(true);
+			}
+			Destroy();
 			return;
 		}
 
@@ -65,29 +64,20 @@ void Mouse::Tick(float deltaTime)
 			game.GoToGameLevel();
 			return;
 		}
-		
+		// 현재 포지션 + 다음 포지션
 		Vector2 newPosition = GetPosition() + MouseMoveDirChange();
-		//3. 화살표 타일 확인 → 방향 갱신
-		ArrowTileUpdateDirectionFromTile(level);
 
-		//4. CanMove(현재방향) 확인
+		//3. CanMove(현재방향) 확인
 		// 다음위치 검사햇을때 이동불가면 90도 회전
-		if (!level->CanMove(GetPosition(), newPosition)) {
-			// 회전
+		while (!level->CanMove(GetPosition(), newPosition))
+		{
 			MousePrsp();
 			newPosition = GetPosition() + MouseMoveDirChange();
-			// 방향 바꾼 후 다음 위치도 이동 가능한지 확인. 아니면 겜오버
-			if (!level->CanMove(GetPosition(), newPosition))
-			{ 
-				// Todo: isBreak로 게임오버 처리하기.여기서 겜오버 창을 띄우던지해야됨
-				// -> 다시 리셋하는걸로 함
-				//isBreak = true;
-				// 사운드 효과 재생
-				Engine::Get().PlayOnShot("Back.wav");
-				game.GoToGameLevel();
-				return;
-			}
+
 		}
+		//4. 화살표 타일 확인 → 방향만. 갱신
+		ArrowTileUpdateDirectionFromTile(level);
+
 		SetPosition(newPosition);
 		timer.Reset();
 	}
@@ -134,7 +124,7 @@ Vector2 Mouse::MouseMoveDirChange()
 bool Mouse::isGoal(std::shared_ptr<GameLevel> level)
 {
 	auto mousePos = GetPosition() + MouseMoveDirChange();
-	// 여기서 AtPosition인가그걸로 골 위치랑 같은위치인지 확인하고 맞다면 겜 클리어 ㄱㄱ
+	// 여기서 FindActorAt로 골 위치랑 같은위치인지 확인하고 맞다면 겜 클리어
 	auto tiledir = level->FindActorAt<Goal>(mousePos);
 	if (tiledir)
 	{

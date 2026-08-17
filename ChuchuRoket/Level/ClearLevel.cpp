@@ -46,6 +46,70 @@ void ClearLevel::Tick(float deltaTime)
 
 void ClearLevel::Draw()
 {
-	Renderer::Get().Submit(L"Stage Clear!", Vector2(5, 5));
+	//Renderer::Get().Submit(L"Stage Clear!", Vector2(5, 5));
+	TitleTextLoad("GameClearAsciiArt.txt", Vector2(7, 5));
 
+}
+
+void ClearLevel::TitleTextLoad(
+	std::string fileName,
+	Craft::Vector2 position)
+{
+	FILE* file = nullptr;
+	std::string fileFullName = "../LevelResources/" + fileName;
+	fopen_s(&file, fileFullName.c_str(), "rt");
+	if (!file) return;
+
+	fseek(file, 0, SEEK_END);
+	int fileSize = ftell(file);
+	rewind(file);
+
+	// +1: 널 종단 문자를 위한 여유 공간 (원래 코드엔 없어서 버퍼 오버런 위험이 있었음).
+	char* buffer = new char[fileSize + 1];
+	size_t readSize = fread(buffer, sizeof(char), fileSize, file);
+	buffer[readSize] = '\0';
+
+	int index = 0;
+	int lineIndex = 0;
+	std::wstring text = {};
+
+	auto replaceAndSubmit = [&]()
+		{
+			for (int i = 0; i < (int)text.length(); i++)
+			{
+				switch (text[i])
+				{
+				case L'#':
+					text[i] = L'█';
+					break;
+				}
+			}
+
+			Renderer::Get().Submit(text, position);
+		};
+
+	while (index < (int)readSize)
+	{
+		if (buffer[index] == '\n')
+		{
+			replaceAndSubmit();
+			position.y++;
+			++lineIndex;
+			++index;
+			text.clear();
+			continue;
+		}
+		text += buffer[index++];
+	}
+
+	// 파일이 개행 문자 없이 끝나는 경우, 마지막 줄을 놓치지 않게 처리.
+	if (!text.empty())
+	{
+		replaceAndSubmit();
+	}
+
+	delete[] buffer;
+	buffer = nullptr;
+	fclose(file);
+	file = nullptr;
 }

@@ -64,7 +64,7 @@ void MainLevel::Draw()
 		Color::PURPLE
 	};
 
-	TitleTextLoad("mainAsciiART.txt", Vector2(3, 1), Color::WHITE, &rainbow);
+	TitleTextLoad("mainAsciiART.txt", Vector2(3, 2), Color::WHITE, &rainbow);
 
 	// ---- 반짝이는 별 장식 ----
 	DrawSparkles();
@@ -82,7 +82,7 @@ void MainLevel::Draw()
 
 void MainLevel::DrawSparkles()
 {
-	// 타이틀 주변에 흩뿌린 별들. 각자 다른 위상(phase)으로 반짝이게 함.
+	// 타이틀 주변에 흩뿌린 별들. 각자 다른 위상(phase)으로 반짝이게 함. 
 	struct Sparkle { int x; int y; float phase; };
 
 	static const Sparkle sparkles[] =

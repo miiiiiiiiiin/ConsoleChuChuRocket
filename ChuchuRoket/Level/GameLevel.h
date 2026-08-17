@@ -3,6 +3,8 @@
 #include <string>
 #include <Engine/Engine.h>
 #include <Game/Game.h>
+#include <setTimer/Timer.h>
+
 class GameLevel : public Craft::Level
 {
 	TYPE_DECLARATIONS(GameLevel, Level)
@@ -24,6 +26,11 @@ public:
 	void SetisCanMove(bool ismove) { isCanMove = ismove; }
 
 	void SetisClear(bool isclear) { isGameClear = isclear; }
+
+	int GetMouseCount() const { return MouseCount; }
+	void SetMouseCount() { ++MouseCount; }
+
+	int GetNumberOfMouse() const { return numberOfMouse; }
 
 
 private:
@@ -57,8 +64,14 @@ private:
 	// 텍스트 위치 설정
 	Craft::Vector2 TextPosition;
 
-	// 쥐 총 카운트
+	// 쥐의 총 마리수
+	int numberOfMouse = 0;
+
+	// 쥐  마리수 확인용 카운트 변수
 	int MouseCount = 0;
+
+	// 게임 타이머 변수
+	Timer timer = 10.0f;
 	
 };
 

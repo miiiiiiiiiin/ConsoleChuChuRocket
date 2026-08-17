@@ -10,6 +10,7 @@ public:
 	virtual void OnInitialized() override;
 	virtual void Tick(float deltaTime) override;
 	virtual void Draw() override;
+	void TitleTextLoad(std::string fileName, Craft::Vector2 position);
 private:
 	Timer timer;
 };

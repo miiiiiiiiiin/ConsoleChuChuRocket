@@ -37,7 +37,7 @@ private:
 	bool isBump(std::shared_ptr<GameLevel> level, Game& game);
 
 	// 화살표 타일 방향 확인 함수
-	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level);
+	void ArrowTileUpdateDirectionFromTile(std::shared_ptr<GameLevel> level, Craft::Vector2& newPosition);
 
 	// 고양이 방향 세터
 	void SetDir(TileDir dir) { direction = dir; }
@@ -61,6 +61,5 @@ private:
 	bool isBreak = false;
 
 	Timer timer;
-	Timer infiniteCatTime;
 };
 
